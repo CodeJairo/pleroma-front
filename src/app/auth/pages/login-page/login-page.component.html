@@ -1,0 +1,36 @@
+<div class="navbar bg-base-100 shadow-sm fixed top-0 z-50 transition-opacity" [class.opacity-50]="isScrolled()"
+  style="view-transition-name: navbar">
+  <a class="btn btn-ghost text-xl">Pleroma</a>
+</div>
+
+<section class="h-screen">
+  <div class="hero bg-base-200 min-h-screen">
+    <div class="hero-content flex-col lg:flex-row-reverse">
+      <div class="text-center lg:text-left" style="view-transition-name: heroText">
+        <h1 class="text-5xl font-bold">¡Inicia sesión ahora!</h1>
+        <p class="py-6">
+          Proporciona tus credenciales para acceder. Si olvidaste tu contraseña,
+          puedes recuperarla fácilmente.
+        </p>
+      </div>
+      <div class="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl" style="view-transition-name: authForm">
+        <div class="card-body">
+          <fieldset class="fieldset">
+            <label class="label">Correo electrónico</label>
+            <input type="email" class="input" placeholder="Correo electrónico" />
+            <label class="label">Contraseña</label>
+            <input type="password" class="input" placeholder="Contraseña" />
+            <div>
+              <a class="link link-hover" routerLink="/auth/recover">¿Olvidaste tu contraseña?</a>
+            </div>
+            <button class="btn btn-neutral mt-4" routerLink="/pleroma">
+              Iniciar sesión
+            </button>
+          </fieldset>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<pleroma-footer />

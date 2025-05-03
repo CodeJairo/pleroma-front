@@ -1,0 +1,92 @@
+<section class="border p-2 size-full">
+  <header class="p-1">
+    <h2 class="text-center text-2xl font-semibold">Datos Personales</h2>
+  </header>
+
+  <!--? Main -->
+  <div class="flex flex-col gap-3 justify-center items-center">
+    <!-- Primera Fila -->
+    <div class="flex flex-col gap-3 lg:flex-row justify-center items-center">
+      <label class="select">
+        <span class="label">Tipo de documento</span>
+        <select class="select select-md">
+          <option>Cédula de ciudadanía</option>
+          <option>Cédula de extranjería</option>
+          <option>Pasaporte</option>
+          <option>Otros</option>
+        </select>
+      </label>
+
+      <label class="floating-label">
+        <span>Número de Documento</span>
+        <input type="number" placeholder="Número de Documento" class="input input-md" />
+      </label>
+    </div>
+    <!--  -->
+
+    <!-- Segunda Fila -->
+    <div class="flex justify-center items-center gap-3">
+      <label class="floating-label">
+        <span>Nombres</span>
+        <input type="text" placeholder="Nombres" class="input input-md" />
+      </label>
+
+      <label class="floating-label">
+        <span>Apellidos</span>
+        <input type="text" placeholder="Apellidos" class="input input-md" />
+      </label>
+    </div>
+
+    <!--  -->
+
+    <!-- Tercera Fila -->
+
+    <div class="flex justify-center items-center w-4/5 not-sm:w-full">
+      <label class="floating-label w-full">
+        <span>Lugar de expedición</span>
+        <input type="text" placeholder="Lugar de expedición" class="w-full input input-md" />
+      </label>
+    </div>
+
+    <!--  -->
+
+    <!-- Cuarta Fila -->
+
+    <div class="flex justify-around">
+      <script type="module" src="https://unpkg.com/cally"></script>
+      <div>
+        <button popovertarget="cally-popover1" class="input input-border" id="cally1" style="anchor-name: --cally1">
+          Fecha de nacimiento
+        </button>
+        <div popover id="cally-popover1" class="dropdown bg-base-100 rounded-box shadow-lg"
+          style="position-anchor: --cally1">
+          <calendar-date class="cally" onchange="{document.getElementById('cally1').innerText = this.value}">
+            <svg aria-label="Previous" class="fill-current size-4" slot="previous" xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24">
+              <path d="M15.75 19.5 8.25 12l7.5-7.5"></path>
+            </svg>
+            <svg aria-label="Next" class="fill-current size-4" slot="next" xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24">
+              <path d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
+            </svg>
+            <calendar-month></calendar-month>
+          </calendar-date>
+        </div>
+      </div>
+      <div class="divider divider-horizontal not-sm:mx-1"></div>
+      <div>
+        <label class="select">
+          <span class="label">Sexo</span>
+          <select class="select select-md">
+            <option>M</option>
+            <option>F</option>
+          </select>
+        </label>
+      </div>
+    </div>
+
+    <!--  -->
+  </div>
+
+  <!-- ? -->
+</section>

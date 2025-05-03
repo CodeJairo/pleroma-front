@@ -1,0 +1,32 @@
+<section class="min-h-screen px-1 sm:px-2 md:px-4 lg:px-8 xl:px-12 2xl:px-16">
+  <!--* Header -->
+  <header class="w-full my-1 flex flex-col items-center">
+    <div class="filter ">
+      <input (click)="changeSection(0)" class="btn filter-reset" type="radio" name="metaframeworks" aria-label="All"
+        [checked]="section() === 0" />
+      <input (click)="changeSection(1)" class="btn" type="radio" name="metaframeworks" aria-label="Persona Natural"
+        [checked]="section() === 1" />
+      <input (click)="changeSection(2)" class="btn" type="radio" name="metaframeworks" aria-label="Persona Jurídica"
+        [checked]="section() === 2" />
+    </div>
+  </header>
+  <!-- * -->
+
+  <!--* Main  -->
+
+  @if (section() === 1) {
+  <natural-person class="animate-fade animate-once animate-duration-500" />
+  } @else if (section() === 2) {
+  <juridical-person class="animate-fade animate-once animate-duration-500" />
+  } @else {
+  <div class="chat chat-end animate-fade-up animate-once animate-duration-700">
+    <div class="chat-bubble">Elija una opción</div>
+  </div>
+  }
+
+  <!-- * -->
+
+  <!--* Footer -->
+  <!-- TODO: -->
+  <!-- * -->
+</section>
