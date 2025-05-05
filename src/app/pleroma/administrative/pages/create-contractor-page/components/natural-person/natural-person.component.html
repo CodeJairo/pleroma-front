@@ -1,20 +1,183 @@
-<div class="w-full p-1">
-  <div class="flex flex-col md:flex-row md:justify-center">
-    <!--? Personal Data Form -->
-    <personal-data-form />
-    <!-- ? -->
-    <div class="divider divider-horizontal"></div>
-    <div class="divider md:hidden"></div>
-    <!--? Contact Details Form -->
-    <contact-details-form />
-    <!-- ? -->
-  </div>
+<!-- component -->
 
-  <div class="divider"></div>
+<body class="min-h-screen leading-normal overflow-x-hidden lg:overflow-auto mb-12 pb-20 not-sm:px-4">
+  <main class="flex-1 md:p-0 lg:pt-8 lg:px-8 md:ml-24 flex flex-col">
+    <section class="rounded-4xl shadow-xl/20 p-4 bg-base-200">
+      <div class="md:flex">
+        <h2 class="uppercase tracking-wide mb-6 text-xl">nuevo contratista</h2>
+      </div>
+      <form>
+        <div class="md:flex mb-8">
+          <div class="md:w-1/3">
+            <legend class="uppercase tracking-wide text-sm">
+              Datos Personales
+            </legend>
+          </div>
+          <div class="md:flex-1 mt-2 mb:mt-0 md:px-3">
+            <div class="mb-4">
+              <label class="block uppercase tracking-wide text-xs font-bold">Nombre</label>
+              <input class="w-full shadow-inner p-4 border-0 bg-base-100" type="text" name="name"
+                placeholder="John Doe" />
+            </div>
+            <div class="md:flex mb-4">
+              <div class="md:flex-1 md:pr-3">
+                <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold">Tipo de
+                  Documento</label>
+                <select class="w-full shadow-inner p-4 border-0 bg-base-100">
+                  <option value="" disabled selected>
+                    Seleccione un tipo de documento
+                  </option>
+                  <option>Cédula de ciudadanía</option>
+                  <option>Cédula de extranjería</option>
+                  <option>Pasaporte</option>
+                </select>
+              </div>
+              <div class="md:flex-1 md:pl-3 not-md:mt-3">
+                <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold">Número de
+                  documento</label>
+                <input class="w-full shadow-inner p-4 border-0 bg-base-100" type="number" name="document_number"
+                  placeholder="123****" />
+              </div>
+            </div>
+            <div class="">
+              <div class="mb-4">
+                <label class="block uppercase tracking-wide text-xs font-bold">Lugar de expedición</label>
+                <input class="w-full shadow-inner p-4 border-0 bg-base-100" type="text" name="name"
+                  placeholder="Ciudad / Departamento" />
+              </div>
+            </div>
+            <div class="md:flex mb-4">
+              <div class="md:flex-1 md:pr-3">
+                <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold">Fecha de
+                  nacimiento</label>
+                <input class="w-full shadow-inner p-4 border-0 bg-base-100" type="date" />
+              </div>
+              <div class="md:flex-1 md:pl-3 not-md:mt-3">
+                <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold">Género</label>
+                <select class="w-full shadow-inner p-4 border-0 bg-base-100">
+                  <option value="" disabled selected>
+                    Seleccione un género
+                  </option>
+                  <option>Masculino</option>
+                  <option>Femenino</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
 
-  <div class="flex flex-col items-center">
-    <!--? Bank Details Form -->
-    <bank-details-form />
-    <!-- ? -->
-  </div>
-</div>
+        <div class="md:flex mb-8">
+          <div class="md:w-1/3">
+            <legend class="uppercase tracking-wide text-sm">
+              Datos de Contacto
+            </legend>
+          </div>
+          <div class="md:flex-1 mt-2 mb:mt-0 md:px-3">
+            <div class="mb-4">
+              <label class="block uppercase tracking-wide text-xs font-bold">Dirección</label>
+              <input class="w-full shadow-inner p-4 border-0 bg-base-100" type="text" placeholder="Ej: Cra 10 #20-30" />
+            </div>
+            <div class="mb-4">
+              <label class="block uppercase tracking-wide text-xs font-bold">Teléfono 1</label>
+              <input class="w-full shadow-inner p-4 border-0 bg-base-100" type="tel" name="phone"
+                placeholder="(321) 111-1111" required />
+            </div>
+            <div class="mb-4">
+              <label class="block uppercase tracking-wide text-xs font-bold">Teléfono 2</label>
+              <input class="w-full shadow-inner p-4 border-0 bg-base-100" type="tel" name="phone"
+                placeholder="opcional" />
+            </div>
+            <div class="mb-4">
+              <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold">Email</label>
+              <input class="w-full shadow-inner p-4 border-0 bg-base-100" type="email" name="email"
+                placeholder="example@mail.com" />
+            </div>
+          </div>
+        </div>
+
+        <div class="md:flex">
+          <div class="md:w-1/3">
+            <legend class="uppercase tracking-wide text-sm">
+              Datos Bancarios
+            </legend>
+          </div>
+          <div class="md:flex-1 mt-2 mb:mt-0 md:px-3">
+            <div class="mb-4">
+              <label class="block uppercase tracking-wide text-xs font-bold">Entidad Financiera</label>
+
+              <select (change)="onEntityChange($event)" class="w-full shadow-inner p-4 border-0 bg-base-100">
+                <option value="" disabled selected>
+                  Seleccione una entidad financiera
+                </option>
+                <option>Bancamía S.A.</option>
+                <option>BANCIEN S.A. / BAN100 S.A.</option>
+                <option>BANCO AGRARIO DE COLOMBIA S.A.</option>
+                <option>Banco AV Villas S.A.</option>
+                <option>Banco BBVA Colombia S.A.</option>
+                <option>Banco BTG Pactual Colombia S.A.</option>
+                <option>BANCO CAJA SOCIAL S.A.</option>
+                <option>BANCO CONTACTAR S.A.</option>
+                <option>Banco Coomeva S.A.</option>
+                <option>Banco Cooperativo Coopcentral</option>
+                <option>Banco Davivienda S.A.</option>
+                <option>Banco de Bogotá S.A.</option>
+                <option>Banco de Occidente S.A.</option>
+                <option>Banco Falabella S.A.</option>
+                <option>Banco Finandina S.A.</option>
+                <option>BANCO GNB SUDAMERIS S.A.</option>
+                <option>BANCO J.P. MORGAN COLOMBIA S.A.</option>
+                <option>BANCO MUNDO MUJER S.A.</option>
+                <option>Banco Pichincha S.A.</option>
+                <option>Banco Popular S.A.</option>
+                <option>BANCO SANTANDER DE NEGOCIOS COLOMBIA S.A.</option>
+                <option>BANCO SERFINANZA S.A.</option>
+                <option>BANCO UNIÓN S.A.</option>
+                <option>Banco W S.A.</option>
+                <option>Bancolombia S.A.</option>
+                <option>Citibank-Colombia</option>
+                <option>Itaú Colombia S.A.</option>
+                <option>Lulo Bank S.A.</option>
+                <option>Mibanco S.A.</option>
+                <option>SCOTIABANK COLPATRIA S.A.</option>
+                <option>Otra entidad financiera</option>
+              </select>
+            </div>
+
+            @if (otherBank() === true) {
+            <div class="mb-4">
+              <label class="block uppercase tracking-wide text-xs font-bold">Otra entidad Financiera</label>
+              <input class="w-full shadow-inner p-4 border-0 bg-base-100" type="text" placeholder="Ej: Banco XXX"
+                required />
+            </div>
+            }
+
+            <div class="mb-4">
+              <label class="block uppercase tracking-wide text-xs font-bold">Tipo de cuenta</label>
+
+              <select class="w-full shadow-inner p-4 border-0 bg-base-100">
+                <option value="" disabled selected>
+                  Seleccione un tipo de cuenta
+                </option>
+                <option>Ahorros</option>
+                <option>Corriente</option>
+              </select>
+            </div>
+
+            <div class="mb-4">
+              <label class="block uppercase tracking-wide text-xs font-bold">Número de cuenta</label>
+              <input class="w-full shadow-inner p-4 border-0 bg-base-100" type="number" placeholder="123456789"
+                required />
+            </div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="flex justify-around md:justify-end md:gap-3">
+          <input class="w-24 btn btn-warning" type="reset" value="Reset" />
+          <input class="w-24 btn btn-success" type="submit" value="Guardar" />
+        </div>
+      </form>
+    </section>
+  </main>
+</body>

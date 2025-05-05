@@ -1,6 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
 @import "tailwindcss-animated";
+@custom-variant dark (&:where(.dark, .dark *));
 @plugin "daisyui" {
   themes: corporate --default, dark --prefersdark;
+}
+
+*::placeholder {
+  @apply italic opacity-50;
+}
+
+select option:disabled,
+select option[disabled] {
+  @apply italic opacity-50;
 }

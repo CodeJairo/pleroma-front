@@ -10,11 +10,20 @@ export class SwapComponent implements OnInit {
 
   ngOnInit(): void {
     const storedTheme = localStorage.getItem('theme');
-    if (storedTheme !== null) {
-      this.Theme.set(storedTheme);
-    } else {
-      this.Theme.set('corporate');
+    const prefersDark = window.matchMedia(
+      '(prefers-color-scheme: dark)'
+    ).matches;
+
+    if (storedTheme) return this.Theme.set(storedTheme);
+
+    if (prefersDark) {
+      this.Theme.set('dark');
+      localStorage.setItem('theme', 'dark');
+      return;
     }
+
+    this.Theme.set('corporate');
+    localStorage.setItem('theme', 'corporate');
   }
 
   toggleTheme() {

@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { LayoutPageComponent } from './layouts/layout-page/layout-page.component';
 import { HomePageComponent } from '../shared/pages/home-page/home-page.component';
+
 export const pleromaRoutes: Routes = [
   {
     path: '',

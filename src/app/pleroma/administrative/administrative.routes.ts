@@ -3,6 +3,7 @@ import { CreateContractorPageComponent } from './pages/create-contractor-page/cr
 import { BudgetInformationPageComponent } from './pages/budget-information-page/budget-information-page.component';
 import { MasterInfoPageComponent } from './pages/master-info-page/master-info-page.component';
 import { AdministrativeLayoutPageComponent } from './layout/administrative-layout-page/administrative-layout-page.component';
+import { UnsavedChangesGuard } from '@auth/guards/unsaved-changes.guard';
 
 export const administrativeRoutes: Routes = [
   {
@@ -12,6 +13,7 @@ export const administrativeRoutes: Routes = [
       {
         path: 'create-contractor',
         component: CreateContractorPageComponent,
+        canDeactivate: [UnsavedChangesGuard],
       },
       {
         path: 'budget-information',
