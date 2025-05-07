@@ -26,6 +26,15 @@ export class BudgetInformationPageComponent {
   // Propiedades
   isFormDirty = output<boolean>();
   otherBank = signal(false);
+  rubrosTotal = signal<number>(0);
+
+  onRubroChange(): void {
+    let rubrosTotal = 0;
+    this.rubrosArray.controls.forEach((control) => {
+      rubrosTotal += control.value['allocatedAmount'];
+    });
+    this.rubrosTotal.set(rubrosTotal);
+  }
 
   // Validadores personalizados
   allowOnlyNumbers: (event: KeyboardEvent) => void;
