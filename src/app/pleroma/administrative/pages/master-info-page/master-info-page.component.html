@@ -1,11 +1,470 @@
-<section class="flex flex-col items-center justify-center gap-5 h-screen">
-  <h1 class="text-2xl btn btn-accent w-fit h-15 not-sm:mx-2">
-    Este Modulo estará disponible pronto
-  </h1>
-  <div class="flex w-80 flex-col gap-4">
-    <div class="skeleton h-32 w-full"></div>
-    <div class="skeleton h-4 w-28"></div>
-    <div class="skeleton h-4 w-full"></div>
-    <div class="skeleton h-4 w-full"></div>
-  </div>
-</section>
+<body
+  class="min-h-screen leading-normal overflow-x-hidden lg:overflow-auto mb-12 pb-20 not-sm:px-4"
+>
+  <main class="flex-1 md:p-0 lg:pt-8 lg:px-8 md:ml-24 flex flex-col">
+    <section class="rounded-4xl shadow-xl/20 p-4 bg-base-200">
+      <div class="md:flex">
+        <h2 class="uppercase tracking-wide mb-6 text-xl">
+          Información Maestra del Proceso
+        </h2>
+      </div>
+
+      <form [formGroup]="masterInfoForm" (ngSubmit)="onSubmit()">
+        <!-- Datos del contrato -->
+        <div class="md:flex mb-8">
+          <div class="md:w-1/3">
+            <legend class="uppercase tracking-wide text-sm">
+              Datos del contrato
+            </legend>
+          </div>
+
+          <div class="md:flex-1 mt-2 mb:mt-0 md:px-3">
+            <label
+              class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold text-center pb-2"
+              >Aplicación centro de costo domiciliario</label
+            >
+
+            <!-- Radio PC -->
+            <div class="flex justify-around not-sm:flex-col gap-1">
+              <div>
+                <input type="checkbox" name="checkbox-1" class="checkbox" />
+                <label class="pl-1">Acueducto</label>
+              </div>
+              <div>
+                <input type="checkbox" name="checkbox-1" class="checkbox" />
+                <label class="pl-1">Alcantarillado</label>
+              </div>
+              <div>
+                <input type="checkbox" name="checkbox-1" class="checkbox" />
+                <label class="pl-1">Aseo</label>
+              </div>
+              <div>
+                <input type="checkbox" name="checkbox-1" class="checkbox" />
+                <label class="pl-1">Energía</label>
+              </div>
+              <div>
+                <input type="checkbox" name="checkbox-1" class="checkbox" />
+                <label class="pl-1">Gas</label>
+              </div>
+            </div>
+
+
+
+            <br />
+            <div class="md:flex mb-4">
+              <div class="md:flex-1 md:pr-3 mb-4">
+                <label
+                  class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold"
+                  >Modalidad</label
+                >
+                <select class="w-full shadow-inner p-4 border-0 bg-base-100">
+                  <option disabled selected>Seleccione la modalidad</option>
+                  <option>sin oferta (Minima Cuantía)</option>
+                  <option>Oferta privada</option>
+                  <option>Invitación Publica</option>
+                </select>
+              </div>
+              <div class="md:flex-1 md:pr-3 mb-4">
+                <label
+                  class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold"
+                  >Tipología</label
+                >
+                <select class="w-full shadow-inner p-4 border-0 bg-base-100">
+                  <option disabled selected>
+                    Seleccione la Tipología del contrato
+                  </option>
+                  <option>Contrato de obra</option>
+                  <option>Contrato de consultoría</option>
+                  <option>contrato de prestación de servicios</option>
+                  <option>contrato de suministro</option>
+                  <option>contrato de concesión</option>
+                  <option>contrato de interventoría</option>
+                  <option>Alianza publico/privada</option>
+                  <option>contrato de encargo fiduciario</option>
+                </select>
+              </div>
+            </div>
+            <div class="md:flex-1 md:pr-3 mb-4">
+              <label
+                class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold"
+                >Clase</label
+              >
+              <select class="w-full shadow-inner p-4 border-0 bg-base-100">
+                <option disabled selected>
+                  Seleccione la clase del contrato
+                </option>
+                <option>Prestación de Servicios de Apoyo Profesional</option>
+                <option>Prestación de Servicios de Apoyo a la gestión</option>
+                <option>
+                  Prestación de Servicios de Apoyo a las labores operativas
+                </option>
+              </select>
+            </div>
+
+            <!-- Número de orden contractual -->
+            <div class="mt-3 mb-4">
+              <label
+                class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold"
+                >Número de orden contractual</label
+              >
+              <input
+                class="w-full shadow-inner p-4 border-0 bg-base-100"
+                type="number"
+                placeholder="Digite el número de orden contractual"
+              />
+            </div>
+
+            <!-- Fecha de inicio y fecha final -->
+            <div class="md:flex mb-4">
+              <div class="md:flex-1 md:pr-3 mb-4">
+                <label
+                  class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold"
+                  >Fecha de inicio</label
+                >
+                <input
+                  class="w-full shadow-inner p-4 border-0 bg-base-100"
+                  type="date"
+                />
+              </div>
+              <div class="md:flex-1 md:pl-3">
+                <label
+                  class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold"
+                  >Fecha final</label
+                >
+                <input
+                  class="w-full shadow-inner p-4 border-0 bg-base-100"
+                  type="date"
+                />
+              </div>
+            </div>
+
+            <!-- Contratista y Número de documento -->
+            <div class="md:flex mb-4">
+              <div class="md:flex-1 md:pr-3 mb-4">
+                <label
+                  class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold"
+                  >Contratista</label
+                >
+                <select class="w-full shadow-inner p-4 border-0 bg-base-100">
+                  <option disabled selected>Seleccione el contratista</option>
+                  <option>Jairo Herrera</option>
+                </select>
+              </div>
+              <div class="md:flex-1 md:pl-3">
+                <label
+                  class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold"
+                  >Número de documento</label
+                >
+                <input
+                  class="w-full shadow-inner p-4 border-0 bg-base-100"
+                  type="text"
+                  placeholder="######"
+                  disabled
+                />
+              </div>
+            </div>
+
+            <!-- Lugar de expedición -->
+            <div class="mb-4">
+              <label
+                class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold"
+                >Lugar de expedición</label
+              >
+              <input
+                class="w-full shadow-inner p-4 border-0 bg-base-100"
+                type="text"
+                placeholder="Ciudad / Departamento"
+              />
+            </div>
+
+            <!-- Fecha de nacimiento y Sexo -->
+            <div class="md:flex mb-4">
+              <div class="md:flex-1 md:pr-3 mb-4">
+                <label
+                  class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold"
+                  >Fecha de nacimiento</label
+                >
+                <input
+                  class="w-full shadow-inner p-4 border-0 bg-base-100"
+                  type="date"
+                />
+              </div>
+              <div class="md:flex-1 md:pl-3">
+                <label
+                  class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold"
+                  >Sexo</label
+                >
+                <select class="w-full shadow-inner p-4 border-0 bg-base-100">
+                  <option disabled selected>Seleccione el sexo</option>
+                  <option>Masculino</option>
+                  <option>Femenino</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="md:flex mb-8">
+          <div class="md:w-1/3">
+            <legend class="uppercase tracking-wide text-sm">
+              Objeto y Actividades
+            </legend>
+          </div>
+
+          <div class="md:flex-1 mt-2 mb:mt-0 md:px-3">
+            <!-- Objeto Contractual -->
+            <div class="mb-4">
+              <label class="block uppercase tracking-wide text-xs font-bold"
+                >Objeto Contractual</label
+              >
+              <input
+                class="w-full shadow-inner p-4 border-0 bg-base-100 placeholder:opacity-40 placeholder:italic"
+                type="text"
+                placeholder="Ej: Prestación de servicios de apoyo a la gestión para la coordinación y planificación de las labores operativas en la cabecera municipal"
+              />
+            </div>
+
+            <!-- Alcance -->
+            <div class="mb-4">
+              <label class="block uppercase tracking-wide text-xs font-bold"
+                >Alcance</label
+              >
+              <textarea
+                class="w-full shadow-inner p-4 border-0 bg-base-100 placeholder:opacity-40 placeholder:italic"
+                rows="3"
+                placeholder="Describa el alcance del contrato"
+              ></textarea>
+            </div>
+
+            <!-- Lugar de ejecución -->
+            <div class="mb-4">
+              <label class="block uppercase tracking-wide text-xs font-bold"
+                >Lugar de ejecución</label
+              >
+              <input
+                class="w-full shadow-inner p-4 border-0 bg-base-100"
+                type="text"
+                placeholder="Ciudad / Departamento"
+              />
+            </div>
+
+            <!-- Duración hasta -->
+            <div class="mb-4">
+              <label class="block uppercase tracking-wide text-xs font-bold"
+                >Duración hasta</label
+              >
+              <input
+                class="w-full shadow-inner p-4 border-0 bg-base-100"
+                type="date"
+              />
+            </div>
+
+            <!-- Valor del contrato y Valor en letras -->
+            <div class="md:flex mb-4">
+              <div class="md:flex-1 md:pr-3 mb-4">
+                <label class="block uppercase tracking-wide text-xs font-bold"
+                  >Valor del contrato</label
+                >
+                <input
+                  class="w-full shadow-inner p-4 border-0 bg-base-100"
+                  type="number"
+                  placeholder="Digite el valor del contrato"
+                />
+              </div>
+              <div class="md:flex-1 md:pl-3">
+                <label class="block uppercase tracking-wide text-xs font-bold"
+                  >Valor del contrato en letras</label
+                >
+                <input
+                  class="w-full shadow-inner p-4 border-0 bg-base-100"
+                  type="text"
+                  placeholder="Valor en letras"
+                  disabled
+                />
+              </div>
+            </div>
+
+            <!-- Valor actas parciales y Valor en letras -->
+            <div class="md:flex mb-4">
+              <div class="md:flex-1 md:pr-3 mb-4">
+                <label class="block uppercase tracking-wide text-xs font-bold"
+                  >Valor actas parciales</label
+                >
+                <input
+                  class="w-full shadow-inner p-4 border-0 bg-base-100"
+                  type="number"
+                  placeholder="Digite el valor de las actas parciales"
+                />
+              </div>
+              <div class="md:flex-1 md:pl-3">
+                <label class="block uppercase tracking-wide text-xs font-bold"
+                  >Valor actas parciales en letras</label
+                >
+                <input
+                  class="w-full shadow-inner p-4 border-0 bg-base-100"
+                  type="text"
+                  placeholder="Valor en letras"
+                  disabled
+                />
+              </div>
+            </div>
+
+            <!-- Forma de pago -->
+            <div class="mb-4">
+              <label class="block uppercase tracking-wide text-xs font-bold"
+                >Forma de pago</label
+              >
+              <select class="w-full shadow-inner p-4 border-0 bg-base-100">
+                <option disabled selected>Seleccione la forma de pago</option>
+                <option>Total</option>
+                <option>Parcial</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="md:flex mb-8">
+          <div class="md:w-1/3">
+            <legend class="uppercase tracking-wide text-sm">
+              SUPERVISIÓN y Clasificación económica
+            </legend>
+          </div>
+
+          <div class="md:flex-1 mt-2 mb:mt-0 md:px-3">
+            <!-- Nombre del supervisor y Número de documento -->
+            <div class="md:flex mb-4">
+              <div class="md:flex-1 md:pr-3 mb-4">
+                <label class="block uppercase tracking-wide text-xs font-bold"
+                  >Nombre del supervisor</label
+                >
+                <input
+                  class="w-full shadow-inner p-4 border-0 bg-base-100"
+                  type="text"
+                  placeholder="Digite el nombre del supervisor"
+                />
+              </div>
+              <div class="md:flex-1 md:pl-3">
+                <label class="block uppercase tracking-wide text-xs font-bold"
+                  >Número de documento</label
+                >
+                <input
+                  class="w-full shadow-inner p-4 border-0 bg-base-100"
+                  type="text"
+                  placeholder="######"
+                />
+              </div>
+            </div>
+
+            <!-- Número de orden contractual y Objeto -->
+            <div class="md:flex mb-4">
+              <div class="md:flex-1 md:pr-3 mb-4">
+                <label class="block uppercase tracking-wide text-xs font-bold"
+                  >Número de orden contractual</label
+                >
+                <input
+                  class="w-full shadow-inner p-4 border-0 bg-base-100"
+                  type="number"
+                  placeholder="Digite el número de orden contractual"
+                />
+              </div>
+              <div class="md:flex-1 md:pl-3">
+                <label class="block uppercase tracking-wide text-xs font-bold"
+                  >Objeto</label
+                >
+                <input
+                  class="w-full shadow-inner p-4 border-0 bg-base-100"
+                  type="text"
+                  placeholder="Describa el objeto"
+                />
+              </div>
+            </div>
+
+            <!-- Plan de adquisiciones -->
+            <div class="mb-4">
+              <label class="block uppercase tracking-wide text-xs font-bold"
+                >Plan de adquisiciones</label
+              >
+              <textarea
+                class="w-full shadow-inner p-4 border-0 bg-base-100 placeholder:opacity-40 placeholder:italic"
+                rows="3"
+                placeholder="Describa el plan de adquisiciones"
+              ></textarea>
+            </div>
+
+            <!-- Plan de desarrollo -->
+            <div class="mb-4">
+              <label class="block uppercase tracking-wide text-xs font-bold"
+                >Plan de desarrollo</label
+              >
+              <textarea
+                class="w-full shadow-inner p-4 border-0 bg-base-100 placeholder:opacity-40 placeholder:italic"
+                rows="3"
+                placeholder="Describa el plan de desarrollo"
+              ></textarea>
+            </div>
+
+            <!-- Línea estratégica -->
+            <div class="mb-4">
+              <label class="block uppercase tracking-wide text-xs font-bold"
+                >Línea estratégica</label
+              >
+              <textarea
+                class="w-full shadow-inner p-4 border-0 bg-base-100 placeholder:opacity-40 placeholder:italic"
+                rows="3"
+                placeholder="Describa la línea estratégica"
+              ></textarea>
+            </div>
+
+            <!-- Nombre del Sector -->
+            <div class="mb-4">
+              <label class="block uppercase tracking-wide text-xs font-bold"
+                >Nombre del Sector</label
+              >
+              <input
+                class="w-full shadow-inner p-4 border-0 bg-base-100"
+                type="text"
+                placeholder="Digite el nombre del sector"
+              />
+            </div>
+
+            <!-- Clasificador de Bienes y Servicios -->
+            <div class="mb-4">
+              <label class="block uppercase tracking-wide text-xs font-bold"
+                >Clasificador de Bienes y Servicios</label
+              >
+              <textarea
+                class="w-full shadow-inner p-4 border-0 bg-base-100 placeholder:opacity-40 placeholder:italic"
+                rows="3"
+                placeholder="Ej: Código UNSPSC 72103304 Producto : Servicios de barrido de calles o parqueaderos."
+              ></textarea>
+            </div>
+
+            <!-- CIIU -->
+            <div class="mb-4">
+              <label class="block uppercase tracking-wide text-xs font-bold"
+                >CIIU (Clasificación Industrial Internacional Uniforme)</label
+              >
+              <input
+                class="w-full shadow-inner p-4 border-0 bg-base-100"
+                type="number"
+                placeholder="Digite el código CIIU"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="flex justify-around md:justify-end md:gap-3">
+          <input
+            (click)="onReset()"
+            class="w-24 btn btn-warning"
+            type="reset"
+            value="Reset"
+          />
+          <input class="w-24 btn btn-success" type="submit" value="Guardar" />
+        </div>
+      </form>
+    </section>
+  </main>
+</body>

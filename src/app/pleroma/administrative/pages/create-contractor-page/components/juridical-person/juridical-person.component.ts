@@ -162,3 +162,20 @@ export class JuridicalPersonComponent {
     }
   }
 }
+
+//  // ================================
+//   // Métodos relacionados con el campo de entidad financiera
+//   // ================================
+//   onBankChange(event: any) {
+//     const target = event.target as HTMLSelectElement;
+//     const value = target?.value || '';
+//     if (value === 'Otra entidad financiera') {
+//       this.otherBank.set(true);
+//     } else {
+//       this.otherBank.set(false);
+//     }
+//   }
+
+//   toggleOtherBank() {
+//     this.otherBank.set(!this.otherBank());
+//   }
