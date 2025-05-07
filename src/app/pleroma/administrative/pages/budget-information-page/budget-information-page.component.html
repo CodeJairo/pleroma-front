@@ -1,1 +1,236 @@
-<p>budget-information-page works!</p>,
+<br />
+<body
+  class="min-h-screen leading-normal overflow-x-hidden lg:overflow-auto mb-12 pb-20 not-sm:px-4"
+>
+  <main class="flex-1 md:p-0 lg:pt-8 lg:px-8 md:ml-24 flex flex-col">
+    <section class="rounded-4xl shadow-xl/20 p-4 bg-base-200">
+      <div class="md:flex">
+        <h2 class="uppercase tracking-wide mb-6 text-xl">
+          IMPUTACIÓN PRESUPUESTAL
+        </h2>
+      </div>
+
+      <form [formGroup]="budgetInformationForm" (ngSubmit)="onSubmit()">
+        <div class="md:flex mb-8">
+          <div class="md:w-1/3">
+            <legend class="uppercase tracking-wide text-sm">
+              Certificado de disponibilidad Presupuestal
+            </legend>
+          </div>
+
+          <div class="md:flex-1 mt-2 mb:mt-0 md:px-3">
+            <div class="md:flex mb-4">
+              <div class="md:flex-1 md:pr-3">
+                <label
+                  class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold"
+                  >N. Certificado de disponibilidad Presupuestal
+                </label>
+                <input
+                  formControlName="certificatedNumber"
+                  class="w-full shadow-inner p-4 border-0 bg-base-100"
+                  type="number"
+                  name="document_number"
+                  placeholder="Digite el número del certificado"
+                  (keypress)="allowOnlyNumbers($event)"
+                />
+                @if (controlHasError('certificatedNumber')) {
+                <span class="text-xs mb-4 font-thin text-error">{{
+                  getErrorMessage("certificatedNumber", 3)
+                }}</span>
+                }
+              </div>
+              <div class="md:flex-1 md:pl-3 not-md:mt-3">
+                <label
+                  class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold"
+                  >Fecha de expedición</label
+                >
+                <input
+                  formControlName="expeditionDate"
+                  class="w-full shadow-inner p-4 border-0 bg-base-100"
+                  type="date"
+                />
+                @if (controlHasError('expeditionDate')) {
+                <span class="text-xs mb-4 font-thin text-error">{{
+                  getErrorMessage("expeditionDate")
+                }}</span>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="md:flex mb-8">
+          <div class="md:w-1/3">
+            <legend class="uppercase tracking-wide text-sm">Rubros</legend>
+          </div>
+          <div class="md:flex-1 mt-2 mb:mt-0 md:px-3">
+            <div class="md:flex mb-4">
+              <div class="md:flex-1 md:pr-3">
+                <label
+                  class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold"
+                  >Nombre del rubro
+                </label>
+                <input
+                  formControlName="rubroName"
+                  class="w-full shadow-inner p-4 border-0 bg-base-100"
+                  type="text"
+                  name="document_number"
+                  placeholder="Digite el nombre del rubro"
+                />
+                @if (controlHasError('rubroName')) {
+                <span class="text-xs mb-4 font-thin text-error">{{
+                  getErrorMessage("rubroName", 3)
+                }}</span>
+                }
+              </div>
+              <div class="md:flex-1 md:pl-3 not-md:mt-3">
+                <label
+                  class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold"
+                  >Rubro</label
+                >
+                <input
+                  formControlName="rubroCode"
+                  class="w-full shadow-inner p-4 border-0 bg-base-100"
+                  type="number"
+                  placeholder="Digite el número del rubro"
+                />
+                @if (controlHasError('rubroCode')) {
+                <span class="text-xs mb-4 font-thin text-error">{{
+                  getErrorMessage("rubroCode")
+                }}</span>
+                }
+              </div>
+              <div class="md:flex-1 md:pl-3 not-md:mt-3">
+                <label
+                  class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold"
+                  >Monto Asignado</label
+                >
+                <input
+                  formControlName="allocatedAmount"
+                  class="w-full shadow-inner p-4 border-0 bg-base-100"
+                  type="number"
+                  placeholder="EJ. 1'000.000"
+                />
+                @if (controlHasError('allocatedAmount')) {
+                <span class="text-xs mb-4 font-thin text-error">{{
+                  getErrorMessage("allocatedAmount")
+                }}</span>
+                }
+              </div>
+            </div>
+
+            <div>
+              <button class="btn btn-dash">AGREGAR +</button>
+            </div>
+          </div>
+        </div> -->
+
+        <div class="md:flex mb-8">
+          <div class="md:w-1/3">
+            <legend class="uppercase tracking-wide text-sm">Rubros</legend>
+          </div>
+          <div class="md:flex-1 mt-2 mb:mt-0 md:px-3">
+            <div class="md:flex mb-4">
+              <!-- Rubro Array -->
+              <div formArrayName="rubros">
+                @for (control of rubrosArray.controls; track control; let i =
+                $index) {
+                <div [formGroupName]="i" class="md:flex mb-4 items-center">
+                  <div class="md:flex-2 md:pr-3">
+                    <label
+                      class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold mt-2"
+                      >Nombre del rubro
+                    </label>
+                    <input
+                      formControlName="rubroName"
+                      class="w-full shadow-inner p-4 border-0 bg-base-100"
+                      type="text"
+                      name="document_number"
+                      placeholder="Digite el nombre del rubro"
+                    />
+                    @if (controlHasError('rubros.' + i + '.rubroName')) {
+                    <span class="text-xs mb-4 font-thin text-error">{{
+                      getErrorMessage("rubros." + i + ".rubroName", 3)
+                    }}</span>
+                    }
+                  </div>
+                  <div class="md:flex-2 md:pr-3">
+                    <label
+                      class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold mt-2"
+                      >Código del rubro
+                    </label>
+                    <input
+                      formControlName="rubroCode"
+                      class="w-full shadow-inner p-4 border-0 bg-base-100"
+                      type="number"
+                      name="document_number"
+                      placeholder="Digite el número del rubro"
+                      (keypress)="allowOnlyNumbers($event)"
+                    />
+                    @if (controlHasError('rubros.' + i + '.rubroCode')) {
+                    <span class="text-xs mb-4 font-thin text-error">{{
+                      getErrorMessage("rubros." + i + ".rubroCode", 3)
+                    }}</span>
+                    }
+                  </div>
+                  <div class="md:flex-2 md:pr-3">
+                    <label
+                      class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold mt-2"
+                      >Cantidad Asignada (Dinero)
+                    </label>
+                    <input
+                      formControlName="allocatedAmount"
+                      class="w-full shadow-inner p-4 border-0 bg-base-100"
+                      type="number"
+                      name="document_number"
+                      placeholder="Digite la cantidad asignada"
+                      (keypress)="allowOnlyNumbers($event)"
+                    />
+
+                    @if (controlHasError('rubros.' + i + '.allocatedAmount')) {
+                    <span class="text-xs mb-4 font-thin text-error">{{
+                      getErrorMessage("rubros." + i + ".allocatedAmount")
+                    }}</span>
+                    }
+                  </div>
+                  <div class="">
+                    <button
+                      type="button"
+                      class="btn btn-error mt-2"
+                      (click)="removeRubro(i)"
+                      [disabled]="rubrosArray.length === 1"
+                    >
+                      -
+                    </button>
+                  </div>
+                </div>
+
+                }
+              </div>
+            </div>
+            <button class="btn btn-dash" type="button" (click)="addRubro()">
+              AGREGAR +
+            </button>
+          </div>
+
+
+          <label for=""> XDXDXD</label>
+
+        </div>
+
+
+        <div class="divider"></div>
+
+        <div class="flex justify-around md:justify-end md:gap-3">
+          <input
+            (click)="onReset()"
+            class="w-24 btn btn-warning"
+            type="reset"
+            value="Reset"
+          />
+          <input class="w-24 btn btn-success" type="submit" value="Guardar" />
+        </div>
+      </form>
+    </section>
+  </main>
+</body>

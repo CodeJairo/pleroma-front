@@ -4,6 +4,7 @@ import { firstValueFrom } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 
 export const authenticatedGuard: CanMatchFn = async (route, segments) => {
+  return true; // TODO: REMOVE THIS LINE WHEN THE GUARD IS IMPLEMENTED
   const authService = inject(AuthService);
   const router = inject(Router);
 

@@ -59,10 +59,12 @@ export class AuthService {
       );
   }
 
-  logout() {
-    this.http
-      .post(`${apiBaseUrl}/auth/logout`, {}, { withCredentials: true })
-      .subscribe();
+  logout(): any {
+    return this.http.post(
+      `${apiBaseUrl}/auth/logout`,
+      {},
+      { withCredentials: true }
+    );
   }
 
   checkAuthStatus(): Observable<boolean> {

@@ -12,7 +12,13 @@ export class NavbarComponent {
   router = inject(Router);
 
   logout() {
-    this.authService.logout();
-    window.location.reload();
+    this.authService.logout().subscribe({
+      next: () => {
+        window.location.reload(); // Recarga la página para reflejar el cambio de estado
+      },
+      error: (err: unknown) => {
+        console.error('Error during logout:', err);
+      },
+    });
   }
 }

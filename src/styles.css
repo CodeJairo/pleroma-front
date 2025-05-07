@@ -5,6 +5,9 @@
 @plugin "daisyui" {
   themes: corporate --default, dark --prefersdark;
 }
+@theme {
+  --breakpoint-3xl: 120rem;
+}
 
 *::placeholder {
   @apply italic opacity-50;
