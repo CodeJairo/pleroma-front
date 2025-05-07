@@ -31,7 +31,6 @@
                   type="number"
                   name="document_number"
                   placeholder="Digite el número del certificado"
-                  (keypress)="allowOnlyNumbers($event)"
                 />
                 @if (controlHasError('certificatedNumber')) {
                 <span class="text-xs mb-4 font-thin text-error">{{
@@ -102,7 +101,6 @@
                       type="number"
                       name="document_number"
                       placeholder="Digite el número del rubro"
-                      (keypress)="allowOnlyNumbers($event)"
                     />
                     @if (controlHasError('rubros.' + i + '.rubroCode')) {
                     <span class="text-xs mb-4 font-thin text-error">{{
@@ -121,7 +119,6 @@
                       type="number"
                       name="document_number"
                       placeholder="Digite la cantidad asignada"
-                      (keypress)="allowOnlyNumbers($event)"
                       (keyup)="onRubroChange()"
                     />
 
@@ -156,14 +153,6 @@
                 }
               </div>
 
-              <!-- <input
-                disabled
-                class="w-full shadow-inner p-4 border-0 bg-base-100"
-                type="number"
-                name="document_number"
-                placeholder="Digite la cantidad asignada"
-                (keypress)="allowOnlyNumbers($event)"
-              /> -->
               <div class="border w-fit">
                 <label class="input">
                   <span class="label">Total:</span>
@@ -176,8 +165,6 @@
               AGREGAR +
             </button>
           </div>
-
-          <!-- <label for=""> XDXDXD</label> -->
         </div>
 
         <div class="divider"></div>

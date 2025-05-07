@@ -1,4 +1,11 @@
-import { Component, HostListener, inject, output, signal } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  inject,
+  OnInit,
+  output,
+  signal,
+} from '@angular/core';
 import {
   AbstractControl,
   FormArray,
@@ -6,10 +13,6 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import {
-  allowOnlyNumbers,
-  allowOnlyNumbersAndHyphens,
-} from '@shared/utils/key-filter';
 import smoothScrollTo from '@shared/utils/smooth-scroll-to';
 import { FormCacheService } from 'src/app/pleroma/services/form-cache.service';
 
@@ -18,29 +21,23 @@ import { FormCacheService } from 'src/app/pleroma/services/form-cache.service';
   imports: [ReactiveFormsModule],
   templateUrl: './budget-information-page.component.html',
 })
-export class BudgetInformationPageComponent {
+export class BudgetInformationPageComponent implements OnInit {
+  // ================================
   // Inyección de dependencias
+  // ================================
   fb = inject(FormBuilder);
   formCacheService = inject(FormCacheService);
 
+  // ================================
   // Propiedades
+  // ================================
   isFormDirty = output<boolean>();
   otherBank = signal(false);
   rubrosTotal = signal<number>(0);
 
-  onRubroChange(): void {
-    let rubrosTotal = 0;
-    this.rubrosArray.controls.forEach((control) => {
-      rubrosTotal += control.value['allocatedAmount'];
-    });
-    this.rubrosTotal.set(rubrosTotal);
-  }
-
-  // Validadores personalizados
-  allowOnlyNumbers: (event: KeyboardEvent) => void;
-  allowOnlyNumbersAndHyphens: (event: KeyboardEvent) => void;
-
+  // ================================
   // Formulario reactivo
+  // ================================
   budgetInformationForm = this.fb.group({
     certificatedNumber: ['', [Validators.required, Validators.minLength(3)]],
     expeditionDate: ['', [Validators.required]],
@@ -51,6 +48,9 @@ export class BudgetInformationPageComponent {
     return this.budgetInformationForm.get('rubros') as FormArray;
   }
 
+  // ================================
+  // Métodos del formulario
+  // ================================
   createRubro() {
     return this.fb.group({
       rubroName: ['', [Validators.required, Validators.minLength(3)]],
@@ -58,6 +58,7 @@ export class BudgetInformationPageComponent {
       allocatedAmount: ['', [Validators.required]],
     });
   }
+
   addRubro() {
     this.rubrosArray.push(this.createRubro());
   }
@@ -66,29 +67,6 @@ export class BudgetInformationPageComponent {
     this.rubrosArray.removeAt(index);
   }
 
-  // removeRubro(index: number) {
-  //   this.rubros.removeAt(index);
-  // }
-
-  constructor() {
-    // Inicializar validadores personalizados
-    this.allowOnlyNumbers = allowOnlyNumbers;
-    this.allowOnlyNumbersAndHyphens = allowOnlyNumbersAndHyphens;
-
-    // Cargar datos del caché si existen
-    const cachedData = this.formCacheService.getCache('budgetInformationForm');
-    if (cachedData) {
-      this.budgetInformationForm.patchValue(cachedData);
-    }
-
-    // Escuchar cambios en el formulario y actualizar el caché
-    this.budgetInformationForm.valueChanges.subscribe((value) => {
-      this.formCacheService.setCache('budgetInformationForm', value);
-      this.isFormDirty.emit(this.budgetInformationForm.dirty);
-    });
-  }
-
-  // Métodos relacionados con el formulario
   onSubmit() {
     this.budgetInformationForm.markAllAsTouched();
     console.log(this.budgetInformationForm.value);
@@ -121,6 +99,20 @@ export class BudgetInformationPageComponent {
     smoothScrollTo(0);
   }
 
+  // ================================
+  // Métodos relacionados con los rubros
+  // ================================
+  onRubroChange(): void {
+    let rubrosTotal = 0;
+    this.rubrosArray.controls.forEach((control) => {
+      rubrosTotal += control.value['allocatedAmount'];
+    });
+    this.rubrosTotal.set(rubrosTotal);
+  }
+
+  // ================================
+  // Métodos relacionados con el campo de entidad financiera
+  // ================================
   onBankChange(event: any) {
     const target = event.target as HTMLSelectElement;
     const value = target?.value || '';
@@ -135,7 +127,9 @@ export class BudgetInformationPageComponent {
     this.otherBank.set(!this.otherBank());
   }
 
+  // ================================
   // Validación y mensajes de error
+  // ================================
   getErrorMessage(controlName: string, minLength?: number): string | null {
     const control: AbstractControl | null =
       this.budgetInformationForm.get(controlName);
@@ -157,12 +151,28 @@ export class BudgetInformationPageComponent {
     return !!control?.invalid && control?.touched;
   }
 
-  // Evento para prevenir recarga o cierre de la página
+  // ================================
+  // Eventos del navegador
+  // ================================
   @HostListener('window:beforeunload', ['$event'])
   unloadNotification($event: BeforeUnloadEvent): void {
     if (this.budgetInformationForm.dirty) {
       $event.preventDefault();
       $event.returnValue = '';
     }
+  }
+
+  ngOnInit(): void {
+    // Cargar datos del caché si existen
+    const cachedData = this.formCacheService.getCache('budgetInformationForm');
+    if (cachedData) {
+      this.budgetInformationForm.patchValue(cachedData);
+    }
+
+    // Escuchar cambios en el formulario y actualizar el caché
+    this.budgetInformationForm.valueChanges.subscribe((value) => {
+      this.formCacheService.setCache('budgetInformationForm', value);
+      this.isFormDirty.emit(this.budgetInformationForm.dirty);
+    });
   }
 }
