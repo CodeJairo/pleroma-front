@@ -1,66 +1,29 @@
 <form class="h-screen relative" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
   <div class="hero bg-base-200 min-h-screen">
     <div class="hero-content flex-col lg:flex-row-reverse">
-      <div
-        class="text-center lg:text-left"
-        style="view-transition-name: heroText"
-      >
+      <div class="text-center lg:text-left" style="view-transition-name: heroText">
         <h1 class="text-5xl font-bold">¡Inicia sesión ahora!</h1>
-        <p class="py-6">
-          Proporciona tus credenciales para acceder. Si olvidaste tu contraseña,
-          puedes recuperarla fácilmente.
-        </p>
+        <p class="py-6">Proporciona tus credenciales para acceder. Si olvidaste tu contraseña, puedes recuperarla fácilmente.</p>
       </div>
-      <div
-        class="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl"
-        style="view-transition-name: authForm"
-      >
+      <div class="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl" style="view-transition-name: authForm">
         <div class="card-body">
           <fieldset class="fieldset">
             <label class="label">Correo electrónico</label>
-            <input
-              formControlName="email"
-              type="email"
-              class="input"
-              placeholder="Correo electrónico"
-              autocomplete="email"
-            />
-            @if(loginForm.get('email')?.invalid &&
-            loginForm.get('email')?.touched) {
-            <span class="text-xs font-thin text-error"
-              >El correo electrónico es invalido</span
-            >
+            <input formControlName="email" type="email" class="input" placeholder="Correo electrónico" autocomplete="email" />
+            @if(loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+            <span class="text-xs font-thin text-error">El correo electrónico es invalido</span>
             }
             <label class="label">Contraseña</label>
-            <input
-              formControlName="password"
-              type="password"
-              class="input"
-              placeholder="Contraseña"
-              autocomplete="current-password"
-            />
-            @if(loginForm.get('password')?.invalid &&
-            loginForm.get('password')?.touched) {
-            <span class="text-xs mb-4 font-thin text-error"
-              >La contraseña es invalida</span
-            >
+            <input formControlName="password" type="password" class="input" placeholder="Contraseña" autocomplete="current-password" />
+            @if(loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+            <span class="text-xs mb-4 font-thin text-error">La contraseña es invalida</span>
             }
             <div>
-              <a class="link link-hover" routerLink="/auth/recover"
-                >¿Olvidaste tu contraseña?</a
-              >
+              <a class="link link-hover" routerLink="/auth/recover">¿Olvidaste tu contraseña?</a>
             </div>
-            <!-- TODO: DESCOMENTAR ESTA LINEA -->
-            <!-- <button type="submit" class="btn btn-neutral mt-4">
-              Iniciar sesión
-            </button> -->
-            <button
-              type="button"
-              routerLink="/pleroma"
-              class="btn btn-neutral mt-4"
-            >
-              Iniciar sesión
-            </button>
+
+            <button type="submit" [disabled]="loginForm.invalid || isPosting()" class="btn btn-neutral mt-4">Iniciar sesión</button>
+            <!-- <button type="button" routerLink="/pleroma" class="btn btn-neutral mt-4">Iniciar sesión</button> -->
           </fieldset>
         </div>
       </div>
@@ -69,16 +32,8 @@
 </form>
 
 @if(hasFormError() === true ){
-<div
-  role="alert"
-  class="alert alert-warning fixed top-20 right-5 animate-fade-left animate-duration-[750ms] animate-ease-out"
->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="h-6 w-6 shrink-0 stroke-current"
-    fill="none"
-    viewBox="0 0 24 24"
-  >
+<div role="alert" class="alert alert-warning fixed top-20 right-5 animate-fade-left animate-duration-[750ms] animate-ease-out">
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
     <path
       stroke-linecap="round"
       stroke-linejoin="round"
@@ -89,16 +44,8 @@
   <span>Warning: {{ errorMessage() }}</span>
 </div>
 } @if(hasFetchError() === true){
-<div
-  role="alert"
-  class="alert alert-error fixed top-20 right-5 animate-fade-left animate-duration-[750ms] animate-ease-out"
->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="h-6 w-6 shrink-0 stroke-current"
-    fill="none"
-    viewBox="0 0 24 24"
-  >
+<div role="alert" class="alert alert-error fixed top-20 right-5 animate-fade-left animate-duration-[750ms] animate-ease-out">
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
     <path
       stroke-linecap="round"
       stroke-linejoin="round"

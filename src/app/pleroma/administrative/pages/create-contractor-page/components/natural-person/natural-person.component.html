@@ -1,6 +1,4 @@
-<body
-  class="min-h-screen leading-normal overflow-x-hidden lg:overflow-auto mb-12 pb-20 not-sm:px-4"
->
+<body class="min-h-screen leading-normal overflow-x-hidden lg:overflow-auto mb-12 pb-20 not-sm:px-4">
   <main class="flex-1 md:p-0 lg:pt-8 lg:px-8 md:ml-24 flex flex-col">
     <section class="rounded-4xl shadow-xl/20 p-4 bg-base-200">
       <div class="md:flex">
@@ -10,15 +8,11 @@
       <form [formGroup]="naturalPersonForm" (ngSubmit)="onSubmit()">
         <div class="md:flex mb-8">
           <div class="md:w-1/3">
-            <legend class="uppercase tracking-wide text-sm">
-              Datos Personales
-            </legend>
+            <legend class="uppercase tracking-wide text-sm">Datos Personales</legend>
           </div>
           <div class="md:flex-1 mt-2 mb:mt-0 md:px-3">
             <div class="mb-4">
-              <label class="block uppercase tracking-wide text-xs font-bold"
-                >Nombre</label
-              >
+              <label class="block uppercase tracking-wide text-xs font-bold">Nombre</label>
               <input
                 formControlName="rlNAME"
                 class="w-full shadow-inner p-4 border-0 bg-base-100"
@@ -28,39 +22,24 @@
                 autocomplete="name"
               />
               @if (controlHasError('rlNAME')) {
-              <span class="text-xs mb-4 font-thin text-error">{{
-                getErrorMessage("rlNAME", 3)
-              }}</span>
+              <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('rlNAME', 3) }}</span>
               }
             </div>
             <div class="md:flex mb-4">
               <div class="md:flex-1 md:pr-3">
-                <label
-                  class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold"
-                  >Tipo de Documento</label
-                >
-                <select
-                  formControlName="rlTOD"
-                  class="w-full shadow-inner p-4 border-0 bg-base-100"
-                >
-                  <option value="" disabled selected>
-                    Seleccione un tipo de documento
-                  </option>
+                <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold">Tipo de Documento</label>
+                <select formControlName="rlTOD" class="w-full shadow-inner p-4 border-0 bg-base-100">
+                  <option value="" disabled selected>Seleccione un tipo de documento</option>
                   <option>Cédula de ciudadanía</option>
                   <option>Cédula de extranjería</option>
                   <option>Pasaporte</option>
                 </select>
                 @if (controlHasError('rlTOD')) {
-                <span class="text-xs mb-4 font-thin text-error">{{
-                  getErrorMessage("rlTOD")
-                }}</span>
+                <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('rlTOD') }}</span>
                 }
               </div>
               <div class="md:flex-1 md:pl-3 not-md:mt-3">
-                <label
-                  class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold"
-                  >Número de documento</label
-                >
+                <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold">Número de documento</label>
                 <input
                   formControlName="rlDocument"
                   class="w-full shadow-inner p-4 border-0 bg-base-100"
@@ -70,17 +49,13 @@
                   (keypress)="allowOnlyNumbers($event)"
                 />
                 @if (controlHasError('rlDocument')) {
-                <span class="text-xs mb-4 font-thin text-error">{{
-                  getErrorMessage("rlDocument", 6)
-                }}</span>
+                <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('rlDocument', 6) }}</span>
                 }
               </div>
             </div>
             <div class="">
               <div class="mb-4">
-                <label class="block uppercase tracking-wide text-xs font-bold"
-                  >Lugar de expedición</label
-                >
+                <label class="block uppercase tracking-wide text-xs font-bold">Lugar de expedición</label>
                 <input
                   formControlName="rlExpeditionPlace"
                   class="w-full shadow-inner p-4 border-0 bg-base-100"
@@ -89,48 +64,27 @@
                   placeholder="Ciudad / Departamento"
                 />
                 @if (controlHasError('rlExpeditionPlace')) {
-                <span class="text-xs mb-4 font-thin text-error">{{
-                  getErrorMessage("rlExpeditionPlace", 3)
-                }}</span>
+                <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('rlExpeditionPlace', 3) }}</span>
                 }
               </div>
             </div>
             <div class="md:flex mb-4">
               <div class="md:flex-1 md:pr-3">
-                <label
-                  class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold"
-                  >Fecha de nacimiento</label
-                >
-                <input
-                  formControlName="rlBirthdate"
-                  class="w-full shadow-inner p-4 border-0 bg-base-100"
-                  type="date"
-                />
+                <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold">Fecha de nacimiento</label>
+                <input formControlName="rlBirthdate" class="w-full shadow-inner p-4 border-0 bg-base-100" type="date" />
                 @if (controlHasError('rlBirthdate')) {
-                <span class="text-xs mb-4 font-thin text-error">{{
-                  getErrorMessage("rlBirthdate")
-                }}</span>
+                <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('rlBirthdate') }}</span>
                 }
               </div>
               <div class="md:flex-1 md:pl-3 not-md:mt-3">
-                <label
-                  class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold"
-                  >Género</label
-                >
-                <select
-                  formControlName="rlGender"
-                  class="w-full shadow-inner p-4 border-0 bg-base-100"
-                >
-                  <option value="" disabled selected>
-                    Seleccione un género
-                  </option>
+                <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold">Género</label>
+                <select formControlName="rlGender" class="w-full shadow-inner p-4 border-0 bg-base-100">
+                  <option value="" disabled selected>Seleccione un género</option>
                   <option>Masculino</option>
                   <option>Femenino</option>
                 </select>
                 @if (controlHasError('rlGender')) {
-                <span class="text-xs mb-4 font-thin text-error">{{
-                  getErrorMessage("rlGender")
-                }}</span>
+                <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('rlGender') }}</span>
                 }
               </div>
             </div>
@@ -139,15 +93,11 @@
 
         <div class="md:flex mb-8">
           <div class="md:w-1/3">
-            <legend class="uppercase tracking-wide text-sm">
-              Datos de Contacto
-            </legend>
+            <legend class="uppercase tracking-wide text-sm">Datos de Contacto</legend>
           </div>
           <div class="md:flex-1 mt-2 mb:mt-0 md:px-3">
             <div class="mb-4">
-              <label class="block uppercase tracking-wide text-xs font-bold"
-                >Dirección</label
-              >
+              <label class="block uppercase tracking-wide text-xs font-bold">Dirección</label>
               <input
                 formControlName="rlAddress"
                 class="w-full shadow-inner p-4 border-0 bg-base-100"
@@ -155,15 +105,11 @@
                 placeholder="Ej: Cra 10 #20-30"
               />
               @if (controlHasError('rlAddress')) {
-              <span class="text-xs mb-4 font-thin text-error">{{
-                getErrorMessage("rlAddress", 3)
-              }}</span>
+              <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('rlAddress', 3) }}</span>
               }
             </div>
             <div class="mb-4">
-              <label class="block uppercase tracking-wide text-xs font-bold"
-                >Teléfono 1</label
-              >
+              <label class="block uppercase tracking-wide text-xs font-bold">Teléfono 1</label>
               <input
                 formControlName="rlPhone"
                 class="w-full shadow-inner p-4 border-0 bg-base-100"
@@ -174,15 +120,11 @@
                 (keypress)="allowOnlyNumbers($event)"
               />
               @if (controlHasError('rlPhone')) {
-              <span class="text-xs mb-4 font-thin text-error">{{
-                getErrorMessage("rlPhone", 10)
-              }}</span>
+              <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('rlPhone', 10) }}</span>
               }
             </div>
             <div class="mb-4">
-              <label class="block uppercase tracking-wide text-xs font-bold"
-                >Teléfono 2</label
-              >
+              <label class="block uppercase tracking-wide text-xs font-bold">Teléfono 2</label>
               <input
                 formControlName="rlPhone2"
                 class="w-full shadow-inner p-4 border-0 bg-base-100"
@@ -193,16 +135,11 @@
                 (keypress)="allowOnlyNumbers($event)"
               />
               @if (controlHasError('rlPhone2')) {
-              <span class="text-xs mb-4 font-thin text-error">{{
-                getErrorMessage("rlPhone2", 10)
-              }}</span>
+              <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('rlPhone2', 10) }}</span>
               }
             </div>
             <div class="mb-4">
-              <label
-                class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold"
-                >Email</label
-              >
+              <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold">Email</label>
               <input
                 formControlName="rlEmail"
                 class="w-full shadow-inner p-4 border-0 bg-base-100"
@@ -211,9 +148,7 @@
                 placeholder="example@mail.com"
               />
               @if (controlHasError('rlEmail')) {
-              <span class="text-xs mb-4 font-thin text-error">{{
-                getErrorMessage("rlEmail")
-              }}</span>
+              <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('rlEmail') }}</span>
               }
             </div>
           </div>
@@ -221,24 +156,14 @@
 
         <div class="md:flex">
           <div class="md:w-1/3">
-            <legend class="uppercase tracking-wide text-sm">
-              Datos Bancarios
-            </legend>
+            <legend class="uppercase tracking-wide text-sm">Datos Bancarios</legend>
           </div>
           <div class="md:flex-1 mt-2 mb:mt-0 md:px-3">
             <div class="mb-4">
-              <label class="block uppercase tracking-wide text-xs font-bold"
-                >Entidad Financiera</label
-              >
+              <label class="block uppercase tracking-wide text-xs font-bold">Entidad Financiera</label>
 
-              <select
-                formControlName="rlBank"
-                class="w-full shadow-inner p-4 border-0 bg-base-100"
-                (change)="onBankChange($event)"
-              >
-                <option value="" disabled selected>
-                  Seleccione una entidad financiera
-                </option>
+              <select formControlName="rlBank" class="w-full shadow-inner p-4 border-0 bg-base-100" (change)="onBankChange($event)">
+                <option value="" disabled selected>Seleccione una entidad financiera</option>
                 <option>Bancamía S.A.</option>
                 <option>BANCIEN S.A. / BAN100 S.A.</option>
                 <option>BANCO AGRARIO DE COLOMBIA S.A.</option>
@@ -272,17 +197,13 @@
                 <option>Otra entidad financiera</option>
               </select>
               @if (controlHasError('rlBank')) {
-              <span class="text-xs mb-4 font-thin text-error">{{
-                getErrorMessage("rlBank")
-              }}</span>
+              <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('rlBank') }}</span>
               }
             </div>
 
             @if (otherBank() === true) {
             <div class="mb-4">
-              <label class="block uppercase tracking-wide text-xs font-bold"
-                >Otra entidad Financiera</label
-              >
+              <label class="block uppercase tracking-wide text-xs font-bold">Otra entidad Financiera</label>
               <input
                 formControlName="rlAnotherBank"
                 class="w-full shadow-inner p-4 border-0 bg-base-100"
@@ -291,39 +212,26 @@
                 [attr.required]="otherBank() ? true : null"
               />
               @if (controlHasError('rlAnotherBank')) {
-              <span class="text-xs mb-4 font-thin text-error">{{
-                getErrorMessage("rlAnotherBank", 3)
-              }}</span>
+              <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('rlAnotherBank', 3) }}</span>
               }
             </div>
             }
 
             <div class="mb-4">
-              <label class="block uppercase tracking-wide text-xs font-bold"
-                >Tipo de cuenta</label
-              >
+              <label class="block uppercase tracking-wide text-xs font-bold">Tipo de cuenta</label>
 
-              <select
-                formControlName="rlAccountType"
-                class="w-full shadow-inner p-4 border-0 bg-base-100"
-              >
-                <option value="" disabled selected>
-                  Seleccione un tipo de cuenta
-                </option>
+              <select formControlName="rlAccountType" class="w-full shadow-inner p-4 border-0 bg-base-100">
+                <option value="" disabled selected>Seleccione un tipo de cuenta</option>
                 <option>Ahorros</option>
                 <option>Corriente</option>
               </select>
               @if (controlHasError('rlAccountType')) {
-              <span class="text-xs mb-4 font-thin text-error">{{
-                getErrorMessage("rlAccountType")
-              }}</span>
+              <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('rlAccountType') }}</span>
               }
             </div>
 
             <div class="mb-4">
-              <label class="block uppercase tracking-wide text-xs font-bold"
-                >Número de cuenta</label
-              >
+              <label class="block uppercase tracking-wide text-xs font-bold">Número de cuenta</label>
               <input
                 formControlName="rlAccountNumber"
                 class="w-full shadow-inner p-4 border-0 bg-base-100"
@@ -331,9 +239,7 @@
                 placeholder="123456789"
               />
               @if (controlHasError('rlAccountNumber')) {
-              <span class="text-xs mb-4 font-thin text-error">{{
-                getErrorMessage("rlAccountNumber")
-              }}</span>
+              <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('rlAccountNumber') }}</span>
               }
             </div>
           </div>
@@ -342,12 +248,7 @@
         <div class="divider"></div>
 
         <div class="flex justify-around md:justify-end md:gap-3">
-          <input
-            (click)="onReset()"
-            class="w-24 btn btn-warning"
-            type="reset"
-            value="Reset"
-          />
+          <input (click)="onReset()" class="w-24 btn btn-warning" type="reset" value="Reset" />
           <input class="w-24 btn btn-success" type="submit" value="Guardar" />
         </div>
       </form>

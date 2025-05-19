@@ -1,8 +1,10 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
-import { catchError } from 'rxjs';
+import { LoginCredentials } from '@auth/interfaces';
+import { catchError, EMPTY, finalize } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login-page',
@@ -25,6 +27,7 @@ export class LoginPageComponent {
   });
 
   onSubmit() {
+    this.#print(this.loginForm.value);
     this.loginForm.markAllAsTouched();
     if (this.loginForm.invalid) {
       this.errorMessage.set('Verifique todos los campos');
@@ -37,20 +40,26 @@ export class LoginPageComponent {
 
     const { email, password } = this.loginForm.value;
 
-    this.authService.login(email!, password!).subscribe((response) => {
-      if (response) {
-        this.router.navigateByUrl('/');
-        return;
-      }
-      this.errorMessage.set(this.authService.errorMessage());
-      this.hasFetchError.set(true);
-      setTimeout(() => {
-        this.hasFetchError.set(false);
-      }, 5000);
-    });
+    this.authService
+      .login({ email, password } as LoginCredentials)
+      .pipe(
+        finalize(() => this.isPosting.set(false)),
+        catchError(error => this.#handleError(error))
+      )
+      .subscribe();
   }
 
-  print(value: any) {
+  #print(value: any) {
     console.log(value);
+  }
+
+  #handleError(error: HttpErrorResponse) {
+    console.error(error);
+    this.errorMessage.set(error.error.message);
+    this.hasFetchError.set(true);
+    setTimeout(() => {
+      this.hasFetchError.set(false);
+    }, 3500);
+    return EMPTY;
   }
 }

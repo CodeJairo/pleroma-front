@@ -14,7 +14,7 @@ export class NavbarComponent {
   logout() {
     this.authService.logout().subscribe({
       next: () => {
-        window.location.reload(); // Recarga la página para reflejar el cambio de estado
+        // window.location.reload(); // Recarga la página para reflejar el cambio de estado
       },
       error: (err: unknown) => {
         console.error('Error during logout:', err);
