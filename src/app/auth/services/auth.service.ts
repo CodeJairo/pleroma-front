@@ -28,7 +28,7 @@ export class AuthService {
   #inactivityTimeoutId?: any;
 
   // Configuraciones de tiempo en ms
-  #inactivityPeriodMs = 1000 * 60 * 5; // 5 minutos de inactividad
+  #inactivityPeriodMs = 1000 * 60 * 3; // 3 minutos de inactividad
   #refreshBeforeMs = 1000 * 60 * 2; // 2 minutos antes de la expiración
 
   // Estado para mostrar advertencia modal de inactividad
@@ -195,7 +195,6 @@ export class AuthService {
         this.logout().subscribe();
         this.#showInactivityAlert.set(false);
       }
-    }, 1000 * 60 * 2);
+    }, 1000 * 60 * 2); // 2 minutos de espera
   }
 }
-    
