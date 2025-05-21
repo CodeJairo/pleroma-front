@@ -29,7 +29,7 @@ export class AuthService {
 
   // Configuraciones de tiempo en ms
   #inactivityPeriodMs = 1000 * 60 * 5; // 5 minutos de inactividad
-  #refreshBeforeMs = 2 * 60 * 1000; // refrescar 2 minutos antes del token expire
+  #refreshBeforeMs = 1000 * 60 * 2; // 2 minutos antes de la expiración
 
   // Estado para mostrar advertencia modal de inactividad
   #showInactivityAlert = signal(false);
@@ -195,6 +195,7 @@ export class AuthService {
         this.logout().subscribe();
         this.#showInactivityAlert.set(false);
       }
-    }, 1000 * 60);
+    }, 1000 * 60 * 2);
   }
 }
+    

@@ -1,7 +1,4 @@
-export default function smoothScrollTo(
-  targetY: number,
-  duration: number = 500
-) {
+export function smoothScrollTo(targetY: number, duration: number = 500) {
   const startY = window.scrollY; // Posición actual del scroll
   const distance = targetY - startY; // Distancia a recorrer
   const startTime = performance.now(); // Tiempo inicial

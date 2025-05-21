@@ -1,16 +1,6 @@
 import { Component, HostListener, inject, output, signal } from '@angular/core';
-import {
-  FormBuilder,
-  Validators,
-  AbstractControl,
-  ReactiveFormsModule,
-} from '@angular/forms';
-import { CanComponentDeactivate } from '@auth/guards/unsaved-changes.guard';
-import {
-  allowOnlyNumbers,
-  allowOnlyNumbersAndHyphens,
-} from '@shared/utils/key-filter';
-import smoothScrollTo from '@shared/utils/smooth-scroll-to';
+import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { allowOnlyNumbers, allowOnlyNumbersAndHyphens, smoothScrollTo } from '@shared/utils';
 import { FormCacheService } from 'src/app/pleroma/services/form-cache.service';
 
 @Component({
@@ -35,26 +25,10 @@ export class NaturalPersonComponent {
   naturalPersonForm = this.fb.group({
     businessName: ['', [Validators.required, Validators.minLength(3)]],
     TOD: ['NIT'],
-    document: [
-      '',
-      [
-        Validators.required,
-        Validators.minLength(6),
-        Validators.maxLength(15),
-        Validators.pattern(/^\d+-?\d*$/),
-      ],
-    ],
+    document: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(15), Validators.pattern(/^\d+-?\d*$/)]],
     rlNAME: ['', [Validators.required, Validators.minLength(3)]],
     rlTOD: ['', [Validators.required]],
-    rlDocument: [
-      '',
-      [
-        Validators.required,
-        Validators.minLength(6),
-        Validators.maxLength(15),
-        Validators.pattern(/^\d+$/),
-      ],
-    ],
+    rlDocument: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(15), Validators.pattern(/^\d+$/)]],
     rlExpeditionPlace: ['', [Validators.required, Validators.minLength(3)]],
     rlBirthdate: ['', [Validators.required]],
     rlGender: ['', [Validators.required]],
@@ -80,7 +54,7 @@ export class NaturalPersonComponent {
     }
 
     // Escuchar cambios en el formulario y actualizar el caché
-    this.naturalPersonForm.valueChanges.subscribe((value) => {
+    this.naturalPersonForm.valueChanges.subscribe(value => {
       this.formCacheService.setCache('naturalPersonForm', value);
       this.isFormDirty.emit(this.naturalPersonForm.dirty);
     });
@@ -92,13 +66,10 @@ export class NaturalPersonComponent {
 
     if (this.naturalPersonForm.invalid) {
       // Buscar el primer control inválido
-      const firstInvalid = document.querySelector(
-        'form .ng-invalid'
-      ) as HTMLElement;
+      const firstInvalid = document.querySelector('form .ng-invalid') as HTMLElement;
 
       if (firstInvalid) {
-        const offset =
-          firstInvalid.getBoundingClientRect().top + window.scrollY; // Obtener posición del elemento
+        const offset = firstInvalid.getBoundingClientRect().top + window.scrollY; // Obtener posición del elemento
         smoothScrollTo(offset - 100); // Desplazar con un margen de 100px
         firstInvalid.focus(); // Enfocar el campo inválido
       }
@@ -134,8 +105,7 @@ export class NaturalPersonComponent {
 
   // Validación y mensajes de error
   getErrorMessage(controlName: string, minLength?: number): string | null {
-    const control: AbstractControl | null =
-      this.naturalPersonForm.get(controlName);
+    const control: AbstractControl | null = this.naturalPersonForm.get(controlName);
     if (control?.hasError('required')) {
       return 'Este campo es requerido.';
     }
@@ -149,8 +119,7 @@ export class NaturalPersonComponent {
   }
 
   controlHasError(controlName: string): boolean {
-    const control: AbstractControl | null =
-      this.naturalPersonForm.get(controlName);
+    const control: AbstractControl | null = this.naturalPersonForm.get(controlName);
     return !!control?.invalid && control?.touched;
   }
 

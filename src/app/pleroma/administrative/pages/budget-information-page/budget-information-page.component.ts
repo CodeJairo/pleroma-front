@@ -1,19 +1,10 @@
-import {
-  Component,
-  HostListener,
-  inject,
-  OnInit,
-  output,
-  signal,
-} from '@angular/core';
-import {
-  AbstractControl,
-  FormArray,
-  FormBuilder,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import smoothScrollTo from '@shared/utils/smooth-scroll-to';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, HostListener, inject, OnInit, output, signal } from '@angular/core';
+import { AbstractControl, FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { IBudgetInfoEntity } from '@pleroma/administrative/interfaces/budget-info.interface';
+import { BudgetInfoService } from '@pleroma/administrative/services/budget-info.service';
+import { allowOnlyNumbers, allowOnlyNumbersAndHyphens, smoothScrollTo } from '@shared/utils';
+import { catchError, EMPTY, tap } from 'rxjs';
 import { FormCacheService } from 'src/app/pleroma/services/form-cache.service';
 
 @Component({
@@ -27,6 +18,7 @@ export class BudgetInformationPageComponent implements OnInit {
   // ================================
   fb = inject(FormBuilder);
   formCacheService = inject(FormCacheService);
+  #budgetInfoService = inject(BudgetInfoService);
 
   // ================================
   // Propiedades
@@ -34,13 +26,29 @@ export class BudgetInformationPageComponent implements OnInit {
   isFormDirty = output<boolean>();
   otherBank = signal(false);
   rubrosTotal = signal<number>(0);
+  isFormPosted = signal(false);
+  hasFormError = signal(false);
+  hasFetchError = signal(false);
+  isPosting = signal(false);
+  errorMessage = signal<string | null>(null);
+
+  // Validadores personalizados
+  allowOnlyNumbers: (event: KeyboardEvent) => void;
+  allowOnlyNumbersAndHyphens: (event: KeyboardEvent) => void;
+
+  constructor() {
+    // Inicializar validadores personalizados
+    this.allowOnlyNumbers = allowOnlyNumbers;
+    this.allowOnlyNumbersAndHyphens = allowOnlyNumbersAndHyphens;
+  }
 
   // ================================
   // Formulario reactivo
   // ================================
   budgetInformationForm = this.fb.group({
-    certificatedNumber: ['', [Validators.required, Validators.minLength(3)]],
-    expeditionDate: ['', [Validators.required]],
+    certificateNumber: ['', [Validators.required, Validators.minLength(1)]],
+    issuanceDate: ['', [Validators.required]],
+    totalAssignedAmount: ['', [Validators.required]],
     rubros: this.fb.array([this.createRubro()]),
   });
 
@@ -53,9 +61,9 @@ export class BudgetInformationPageComponent implements OnInit {
   // ================================
   createRubro() {
     return this.fb.group({
-      rubroName: ['', [Validators.required, Validators.minLength(3)]],
-      rubroCode: ['', [Validators.required, Validators.minLength(3)]],
-      allocatedAmount: ['', [Validators.required]],
+      name: ['', [Validators.required, Validators.minLength(3)]],
+      code: ['', [Validators.required, Validators.minLength(1)]],
+      assignedAmount: ['', [Validators.required]],
     });
   }
 
@@ -68,17 +76,14 @@ export class BudgetInformationPageComponent implements OnInit {
   }
 
   onSubmit() {
-    this.budgetInformationForm.markAllAsTouched();
     console.log(this.budgetInformationForm.value);
+    this.budgetInformationForm.markAllAsTouched();
     if (this.budgetInformationForm.invalid) {
       // Buscar el primer control inválido
-      const firstInvalid = document.querySelector(
-        'form .ng-invalid'
-      ) as HTMLElement;
+      const firstInvalid = document.querySelector('form .ng-invalid') as HTMLElement;
 
       if (firstInvalid) {
-        const offset =
-          firstInvalid.getBoundingClientRect().top + window.scrollY; // Obtener posición del elemento
+        const offset = firstInvalid.getBoundingClientRect().top + window.scrollY; // Obtener posición del elemento
         smoothScrollTo(offset - 100); // Desplazar con un margen de 100px
         firstInvalid.focus(); // Enfocar el campo inválido
       }
@@ -88,7 +93,20 @@ export class BudgetInformationPageComponent implements OnInit {
 
     // Limpiar el caché y procesar el formulario
     this.formCacheService.clearCache('budgetInformationForm');
-    console.log(this.budgetInformationForm.value);
+    this.#budgetInfoService
+      .createBudgetInfo(this.budgetInformationForm.getRawValue() as IBudgetInfoEntity)
+      .pipe(
+        tap(() => {
+          this.onReset();
+          this.isFormPosted.set(true);
+          setTimeout(() => {
+            this.isFormPosted.set(false);
+          }, 3500);
+          return;
+        }),
+        catchError(error => this.#handleError(error))
+      )
+      .subscribe();
   }
 
   onReset() {
@@ -104,8 +122,8 @@ export class BudgetInformationPageComponent implements OnInit {
   // ================================
   onRubroChange(): void {
     let rubrosTotal = 0;
-    this.rubrosArray.controls.forEach((control) => {
-      rubrosTotal += control.value['allocatedAmount'];
+    this.rubrosArray.controls.forEach(control => {
+      rubrosTotal += control.value['assignedAmount'];
     });
     this.rubrosTotal.set(rubrosTotal);
   }
@@ -114,8 +132,7 @@ export class BudgetInformationPageComponent implements OnInit {
   // Validación y mensajes de error
   // ================================
   getErrorMessage(controlName: string, minLength?: number): string | null {
-    const control: AbstractControl | null =
-      this.budgetInformationForm.get(controlName);
+    const control: AbstractControl | null = this.budgetInformationForm.get(controlName);
     if (control?.hasError('required')) {
       return 'Este campo es requerido.';
     }
@@ -129,8 +146,7 @@ export class BudgetInformationPageComponent implements OnInit {
   }
 
   controlHasError(controlName: string): boolean {
-    const control: AbstractControl | null =
-      this.budgetInformationForm.get(controlName);
+    const control: AbstractControl | null = this.budgetInformationForm.get(controlName);
     return !!control?.invalid && control?.touched;
   }
 
@@ -153,9 +169,23 @@ export class BudgetInformationPageComponent implements OnInit {
     }
 
     // Escuchar cambios en el formulario y actualizar el caché
-    this.budgetInformationForm.valueChanges.subscribe((value) => {
+    this.budgetInformationForm.valueChanges.subscribe(value => {
       this.formCacheService.setCache('budgetInformationForm', value);
       this.isFormDirty.emit(this.budgetInformationForm.dirty);
     });
+  }
+
+  closeSuccessModal() {
+    this.isFormPosted.set(false);
+  }
+
+  #handleError(error: HttpErrorResponse) {
+    console.error(error);
+    this.errorMessage.set(error.error.message);
+    this.hasFetchError.set(true);
+    setTimeout(() => {
+      this.hasFetchError.set(false);
+    }, 8000);
+    return EMPTY;
   }
 }

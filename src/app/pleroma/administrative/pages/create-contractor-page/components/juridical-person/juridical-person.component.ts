@@ -1,8 +1,11 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, HostListener, inject, output, signal } from '@angular/core';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import smoothScrollTo from '@shared/utils/smooth-scroll-to';
-import { FormCacheService } from 'src/app/pleroma/services/form-cache.service';
-import { allowOnlyNumbers, allowOnlyNumbersAndHyphens } from '@utils/key-filter';
+import { IJuridicalPersonEntity } from '@pleroma/administrative/interfaces/juridical-person.interface';
+import { JuridicalPersonService } from '@pleroma/administrative/services/juridical-person.service';
+import { FormCacheService } from '@pleroma/services/form-cache.service';
+import { allowOnlyNumbers, allowOnlyNumbersAndHyphens, smoothScrollTo } from '@shared/utils';
+import { catchError, EMPTY, tap } from 'rxjs';
 
 @Component({
   selector: 'juridical-person',
@@ -13,10 +16,17 @@ export class JuridicalPersonComponent {
   // Inyección de dependencias
   fb = inject(FormBuilder);
   formCacheService = inject(FormCacheService);
+  #juridicalPersonService = inject(JuridicalPersonService);
 
   // Propiedades
   isFormDirty = output<boolean>();
   otherBank = signal(false);
+
+  hasFormError = signal(false);
+  hasFetchError = signal(false);
+  isPosting = signal(false);
+  errorMessage = signal<string | null>(null);
+  isFormPosted = signal(false);
 
   // Validadores personalizados
   allowOnlyNumbers: (event: KeyboardEvent) => void;
@@ -25,22 +35,24 @@ export class JuridicalPersonComponent {
   // Formulario reactivo
   juridicalPersonForm = this.fb.group({
     businessName: ['', [Validators.required, Validators.minLength(3)]],
-    TOD: ['NIT'],
-    document: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(15), Validators.pattern(/^\d+-?\d*$/)]],
-    rlNAME: ['', [Validators.required, Validators.minLength(3)]],
-    rlTOD: ['', [Validators.required]],
-    rlDocument: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(15), Validators.pattern(/^\d+$/)]],
-    rlExpeditionPlace: ['', [Validators.required, Validators.minLength(3)]],
-    rlBirthdate: ['', [Validators.required]],
-    rlGender: ['', [Validators.required]],
-    rlAddress: ['', [Validators.required, Validators.minLength(3)]],
-    rlPhone: ['', [Validators.required, Validators.minLength(10)]],
-    rlPhone2: ['', [Validators.minLength(10)]],
-    rlEmail: ['', [Validators.required, Validators.email]],
-    rlBank: ['', [Validators.required]],
-    rlAnotherBank: ['', [Validators.minLength(3)]],
-    rlAccountType: ['', [Validators.required]],
-    rlAccountNumber: ['', [Validators.required]],
+    businessDocumentNumber: [
+      '',
+      [Validators.required, Validators.minLength(6), Validators.maxLength(15), Validators.pattern(/^\d+-?\d*$/)],
+    ],
+    name: ['', [Validators.required, Validators.minLength(3)]],
+    documentType: ['', [Validators.required]],
+    documentNumber: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(15), Validators.pattern(/^\d+$/)]],
+    expeditionAddress: ['', [Validators.required, Validators.minLength(3)]],
+    birthDate: ['', [Validators.required]],
+    genre: ['', [Validators.required]],
+    address: ['', [Validators.required, Validators.minLength(3)]],
+    phone: ['', [Validators.required, Validators.minLength(10)]],
+    phone2: ['', [Validators.minLength(10)]],
+    email: ['', [Validators.required, Validators.email]],
+    bank: ['', [Validators.required]],
+    // rlAnotherBank: ['', [Validators.minLength(3)]],
+    accountType: ['', [Validators.required]],
+    bankAccountNumber: ['', [Validators.required]],
   });
 
   constructor() {
@@ -63,6 +75,7 @@ export class JuridicalPersonComponent {
 
   // Métodos relacionados con el formulario
   onSubmit() {
+    console.log(this.juridicalPersonForm.value);
     this.juridicalPersonForm.markAllAsTouched();
 
     if (this.juridicalPersonForm.invalid) {
@@ -80,11 +93,25 @@ export class JuridicalPersonComponent {
 
     // Limpiar el caché y procesar el formulario
     this.formCacheService.clearCache('juridicalPersonForm');
-    console.log(this.juridicalPersonForm.value);
+    this.#juridicalPersonService
+      .createJuridicalPerson(this.juridicalPersonForm.getRawValue() as IJuridicalPersonEntity)
+      .pipe(
+        tap(() => {
+          this.onReset();
+          this.isFormPosted.set(true);
+          setTimeout(() => {
+            this.isFormPosted.set(false);
+          }, 3500);
+          return;
+        }),
+        catchError(error => this.#handleError(error))
+      )
+      .subscribe();
   }
 
   onReset() {
     // Reiniciar el formulario y limpiar el caché
+    this.isPosting.set(false);
     this.juridicalPersonForm.reset();
     this.formCacheService.clearCache('juridicalPersonForm');
     smoothScrollTo(0);
@@ -124,6 +151,12 @@ export class JuridicalPersonComponent {
     return !!control?.invalid && control?.touched;
   }
 
+
+
+  closeSuccessModal() {
+    this.isFormPosted.set(false);
+  }
+
   // Evento para prevenir recarga o cierre de la página
   @HostListener('window:beforeunload', ['$event'])
   unloadNotification($event: BeforeUnloadEvent): void {
@@ -132,21 +165,14 @@ export class JuridicalPersonComponent {
       $event.returnValue = '';
     }
   }
+
+  #handleError(error: HttpErrorResponse) {
+    console.error(error);
+    this.errorMessage.set(error.error.message);
+    this.hasFetchError.set(true);
+    setTimeout(() => {
+      this.hasFetchError.set(false);
+    }, 3500);
+    return EMPTY;
+  }
 }
-
-//  // ================================
-//   // Métodos relacionados con el campo de entidad financiera
-//   // ================================
-//   onBankChange(event: any) {
-//     const target = event.target as HTMLSelectElement;
-//     const value = target?.value || '';
-//     if (value === 'Otra entidad financiera') {
-//       this.otherBank.set(true);
-//     } else {
-//       this.otherBank.set(false);
-//     }
-//   }
-
-//   toggleOtherBank() {
-//     this.otherBank.set(!this.otherBank());
-//   }

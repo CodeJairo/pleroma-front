@@ -1,21 +1,15 @@
 <br />
-<body
-  class="min-h-screen leading-normal overflow-x-hidden lg:overflow-auto mb-12 px-4 md:px-8 lg:px-0 not-lg:pb-10 pt-4"
->
+<body class="min-h-screen leading-normal overflow-x-hidden lg:overflow-auto mb-12 px-4 md:px-8 lg:px-0 not-lg:pb-10 pt-4">
   <main class="flex-1 lg:p-0 lg:pt-8 lg:px-8 lg:ml-24 flex flex-col">
     <section class="rounded-4xl shadow-xl/20 p-4 bg-base-200">
       <div class="lg:flex">
-        <h2 class="uppercase tracking-wide mb-6 text-xl">
-          IMPUTACIÓN PRESUPUESTAL
-        </h2>
+        <h2 class="uppercase tracking-wide mb-6 text-xl">IMPUTACIÓN PRESUPUESTAL</h2>
       </div>
 
       <form [formGroup]="budgetInformationForm" (ngSubmit)="onSubmit()">
         <div class="lg:flex mb-8">
           <div class="lg:w-1/3">
-            <legend class="uppercase tracking-wide text-sm not-sm:text-center">
-              Certificado de disponibilidad Presupuestal
-            </legend>
+            <legend class="uppercase tracking-wide text-sm not-sm:text-center">Certificado de disponibilidad Presupuestal</legend>
           </div>
 
           <div class="lg:flex-1 mt-2 mb:mt-0 lg:px-3">
@@ -26,32 +20,24 @@
                   >N. Certificado de disponibilidad Presupuestal
                 </label>
                 <input
-                  formControlName="certificatedNumber"
+                  formControlName="certificateNumber"
                   class="w-full shadow-inner p-4 border-0 bg-base-100"
-                  type="number"
+                  type="text"
                   name="document_number"
                   placeholder="Digite el número del certificado"
+                  (keypress)="allowOnlyNumbers($event)"
                 />
-                @if (controlHasError('certificatedNumber')) {
-                <span class="text-xs mb-4 font-thin text-error">{{
-                  getErrorMessage("certificatedNumber", 3)
-                }}</span>
+                @if (controlHasError('certificateNumber')) {
+                <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('certificateNumber', 3) }}</span>
                 }
               </div>
               <div class="lg:flex-1 lg:pl-3 not-lg:mt-3">
-                <label
-                  class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold text-nowrap"
+                <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold text-nowrap"
                   >Fecha de expedición</label
                 >
-                <input
-                  formControlName="expeditionDate"
-                  class="w-full shadow-inner p-4 border-0 bg-base-100"
-                  type="date"
-                />
-                @if (controlHasError('expeditionDate')) {
-                <span class="text-xs mb-4 font-thin text-error">{{
-                  getErrorMessage("expeditionDate")
-                }}</span>
+                <input formControlName="issuanceDate" class="w-full shadow-inner p-4 border-0 bg-base-100" type="date" />
+                @if (controlHasError('issuanceDate')) {
+                <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('issuanceDate') }}</span>
                 }
               </div>
             </div>
@@ -66,55 +52,45 @@
             <div class="lg:flex lg:flex-col mb-4">
               <!-- Rubro Array -->
               <div formArrayName="rubros" class="flex-1">
-                @for (control of rubrosArray.controls; track control; let i =
-                $index) {
-                <div
-                  [formGroupName]="i"
-                  class="lg:flex mb-4 items-center px-2 pb-2 not-lg:pt-2 rounded-2xl bg-base-300"
-                >
+                @for (control of rubrosArray.controls; track control; let i = $index) {
+                <div [formGroupName]="i" class="lg:flex mb-4 items-center px-2 pb-2 not-lg:pt-2 rounded-2xl bg-base-300">
                   <div class="lg:flex-2 lg:pr-3">
-                    <label
-                      class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold mt-2 text-nowrap"
+                    <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold mt-2 text-nowrap"
                       >Nombre del rubro
                     </label>
                     <input
-                      formControlName="rubroName"
+                      formControlName="name"
                       class="w-full shadow-inner p-4 border-0 bg-base-100"
                       type="text"
                       name="document_number"
                       placeholder="Digite el nombre del rubro"
                     />
-                    @if (controlHasError('rubros.' + i + '.rubroName')) {
-                    <span class="text-xs mb-4 font-thin text-error">{{
-                      getErrorMessage("rubros." + i + ".rubroName", 3)
-                    }}</span>
+                    @if (controlHasError('rubros.' + i + '.name')) {
+                    <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('rubros.' + i + '.name', 3) }}</span>
                     }
                   </div>
                   <div class="lg:flex-2 lg:pr-3">
-                    <label
-                      class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold mt-2 text-nowrap"
+                    <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold mt-2 text-nowrap"
                       >Código del rubro
                     </label>
                     <input
-                      formControlName="rubroCode"
+                      formControlName="code"
                       class="w-full shadow-inner p-4 border-0 bg-base-100"
-                      type="number"
+                      type="text"
                       name="document_number"
                       placeholder="Digite el número del rubro"
+                      (keypress)="allowOnlyNumbers($event)"
                     />
-                    @if (controlHasError('rubros.' + i + '.rubroCode')) {
-                    <span class="text-xs mb-4 font-thin text-error">{{
-                      getErrorMessage("rubros." + i + ".rubroCode", 3)
-                    }}</span>
+                    @if (controlHasError('rubros.' + i + '.code')) {
+                    <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('rubros.' + i + '.code', 3) }}</span>
                     }
                   </div>
                   <div class="lg:flex-2 lg:pr-3">
-                    <label
-                      class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold mt-2 text-nowrap"
+                    <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold mt-2 text-nowrap"
                       >Cantidad Asignada (Dinero)
                     </label>
                     <input
-                      formControlName="allocatedAmount"
+                      formControlName="assignedAmount"
                       class="w-full shadow-inner p-4 border-0 bg-base-100"
                       type="number"
                       name="document_number"
@@ -122,10 +98,8 @@
                       (keyup)="onRubroChange()"
                     />
 
-                    @if (controlHasError('rubros.' + i + '.allocatedAmount')) {
-                    <span class="text-xs mb-4 font-thin text-error">{{
-                      getErrorMessage("rubros." + i + ".allocatedAmount")
-                    }}</span>
+                    @if (controlHasError('rubros.' + i + '.assignedAmount')) {
+                    <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('rubros.' + i + '.assignedAmount') }}</span>
                     }
                   </div>
                   <div class="">
@@ -157,28 +131,50 @@
                 <label class="input">
                   <span class="label">Total:</span>
                   <div class="divider divider-horizontal"></div>
-                  <input type="text" disabled [value]="rubrosTotal()" />
+                  <input formControlName="totalAssignedAmount" type="number" [value]="rubrosTotal()" />
                 </label>
               </div>
             </div>
-            <button class="btn btn-dash" type="button" (click)="addRubro()">
-              AGREGAR +
-            </button>
+            <button class="btn btn-dash" type="button" (click)="addRubro()">AGREGAR +</button>
           </div>
         </div>
 
         <div class="divider"></div>
 
         <div class="flex justify-around lg:justify-end lg:gap-3">
-          <input
-            (click)="onReset()"
-            class="w-24 btn btn-warning"
-            type="reset"
-            value="Reset"
-          />
+          <input (click)="onReset()" class="w-24 btn btn-warning" type="reset" value="Reset" />
           <input class="w-24 btn btn-success" type="submit" value="Guardar" />
         </div>
       </form>
     </section>
   </main>
 </body>
+
+@if(hasFetchError()) {
+<div role="alert" class="alert alert-error fixed top-20 right-5 animate-fade-left animate-duration-[750ms] animate-ease-out z-[999]">
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+    />
+  </svg>
+  <span>Error: {{ errorMessage() }}</span>
+</div>
+} @if(isFormPosted()) {
+<!-- Modal de Éxito -->
+<input type="checkbox" id="success_modal" class="modal-toggle" [checked]="isFormPosted()" />
+<div class="modal" role="dialog">
+  <div class="modal-box text-center">
+    <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-green-500 mb-4" fill="none" viewBox="0 0 24 24">
+      <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+    </svg>
+    <h3 class="font-bold text-lg">¡Registro exitoso!</h3>
+    <p class="py-4">La información presupuestal fue guardada correctamente.</p>
+    <div class="modal-action">
+      <label for="success_modal" (click)="closeSuccessModal()" class="btn btn-primary">Cerrar</label>
+    </div>
+  </div>
+</div>
+}

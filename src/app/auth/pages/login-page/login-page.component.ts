@@ -12,8 +12,8 @@ import { HttpErrorResponse } from '@angular/common/http';
   templateUrl: './login-page.component.html',
 })
 export class LoginPageComponent {
-  authService = inject(AuthService);
-  router = inject(Router);
+  #authService = inject(AuthService);
+  // #router = inject(Router);
 
   fb = inject(FormBuilder);
   hasFormError = signal(false);
@@ -22,13 +22,13 @@ export class LoginPageComponent {
   errorMessage = signal<string | null>(null);
 
   loginForm = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(8)]],
+    email: ['admin@admin.com', [Validators.required, Validators.email]],
+    password: ['kK4Sf1d3$m|3vT>/2Q>W', [Validators.required, Validators.minLength(8)]],
   });
 
   onSubmit() {
-    this.#print(this.loginForm.value);
     this.loginForm.markAllAsTouched();
+
     if (this.loginForm.invalid) {
       this.errorMessage.set('Verifique todos los campos');
       this.hasFormError.set(true);
@@ -39,18 +39,15 @@ export class LoginPageComponent {
     }
 
     const { email, password } = this.loginForm.value;
+    this.isPosting.set(true);
 
-    this.authService
+    this.#authService
       .login({ email, password } as LoginCredentials)
       .pipe(
         finalize(() => this.isPosting.set(false)),
         catchError(error => this.#handleError(error))
       )
       .subscribe();
-  }
-
-  #print(value: any) {
-    console.log(value);
   }
 
   #handleError(error: HttpErrorResponse) {

@@ -7,7 +7,7 @@
     "paths": {
       "@auth/*": ["src/app/auth/*"],
       "@shared/*": ["src/app/shared/*"],
-      "@utils/*": ["src/app/shared/utils/*"]
+      "@pleroma/*": ["src/app/pleroma/*"]
     },
     "outDir": "./dist/out-tsc",
     "strict": true,
