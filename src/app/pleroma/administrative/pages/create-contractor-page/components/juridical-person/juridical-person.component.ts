@@ -20,7 +20,6 @@ export class JuridicalPersonComponent {
 
   // Propiedades
   isFormDirty = output<boolean>();
-  otherBank = signal(false);
 
   hasFormError = signal(false);
   hasFetchError = signal(false);
@@ -117,18 +116,15 @@ export class JuridicalPersonComponent {
     smoothScrollTo(0);
   }
 
-  onBankChange(event: any) {
-    const target = event.target as HTMLSelectElement;
-    const value = target?.value || '';
-    if (value === 'Otra entidad financiera') {
-      this.otherBank.set(true);
-    } else {
-      this.otherBank.set(false);
+  onBankChange(e: Event) {
+    const value = (e.target as HTMLSelectElement).value;
+    if (value === 'null' || value === '' || value === null)
+      (this.juridicalPersonForm as any).addControl('anotherBank', this.fb.control('', [Validators.required, Validators.minLength(3)]));
+    else {
+      if ((this.juridicalPersonForm as any).contains('anotherBank')) {
+        (this.juridicalPersonForm as any).removeControl('anotherBank');
+      }
     }
-  }
-
-  toggleOtherBank() {
-    this.otherBank.set(!this.otherBank());
   }
 
   // Validación y mensajes de error
@@ -150,8 +146,6 @@ export class JuridicalPersonComponent {
     const control: AbstractControl | null = this.juridicalPersonForm.get(controlName);
     return !!control?.invalid && control?.touched;
   }
-
-
 
   closeSuccessModal() {
     this.isFormPosted.set(false);

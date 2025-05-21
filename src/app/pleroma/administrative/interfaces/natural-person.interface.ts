@@ -1,8 +1,6 @@
-export interface IJuridicalPersonEntity {
-  businessName: string;
-  businessDocumentNumber: string;
+export interface INaturalPersonEntity {
   name: string;
-  documentType: string;
+  documentType: DocumentType;
   documentNumber: string;
   expeditionAddress: string;
   birthDate: string;
@@ -11,11 +9,12 @@ export interface IJuridicalPersonEntity {
   phone: string;
   phone2?: string | null;
   email: string;
-  bank: string 
+  bank: string;
   anotherBank?: string | null;
-  accountType: BankAccountType;
   bankAccountNumber: string;
+  accountType: BankAccountType;
 }
 
 type Genre = 'M' | 'F';
 type BankAccountType = 'AHORRO' | 'CORRIENTE';
+type DocumentType = 'CC' | 'CE' | 'PAS';

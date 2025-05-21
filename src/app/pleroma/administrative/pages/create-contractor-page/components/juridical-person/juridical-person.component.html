@@ -242,25 +242,25 @@
                 <option>Lulo Bank S.A.</option>
                 <option>Mibanco S.A.</option>
                 <option>SCOTIABANK COLPATRIA S.A.</option>
-                <option>Otra entidad financiera</option>
+                <option value="null">Otra entidad financiera</option>
               </select>
               @if (controlHasError('bank')) {
               <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('bank') }}</span>
               }
             </div>
 
-            @if (otherBank() === true) {
+            <!-- Sólo aparece si existe el control -->
+            @if (juridicalPersonForm.contains('anotherBank')) {
             <div class="mb-4">
-              <label class="block uppercase tracking-wide text-xs font-bold">Otra entidad Financiera</label>
+              <label class="block uppercase text-xs font-bold">Otra entidad Financiera</label>
               <input
-                formControlName="bank"
-                class="w-full shadow-inner p-4 border-0 bg-base-100"
+                formControlName="anotherBank"
+                class="w-full p-4 bg-base-100"
                 type="text"
-                placeholder="Ej: Banco XXX"
-                [attr.required]="otherBank() ? true : null"
+                placeholder="Ej: Banco de la Gente S.A."
               />
-              @if (controlHasError('bank')) {
-              <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('bank', 3) }}</span>
+              @if (controlHasError('anotherBank')) {
+              <span class="text-xs text-error">{{ getErrorMessage('anotherBank', 3) }}</span>
               }
             </div>
             }
@@ -270,8 +270,8 @@
 
               <select formControlName="accountType" class="w-full shadow-inner p-4 border-0 bg-base-100">
                 <option value="" disabled selected>Seleccione un tipo de cuenta</option>
-                <option>AHORROS</option>
-                <option>CORRIENTE</option>
+                <option value="AHORROS">Ahorros</option>
+                <option value="CORRIENTE">Corriente</option>
               </select>
               @if (controlHasError('accountType')) {
               <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('accountType') }}</span>
