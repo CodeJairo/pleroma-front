@@ -138,13 +138,13 @@
                 <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold">Contratista</label>
                 <ng-select
                   [items]="contractors"
-                  bindLabel="name"
+                  bindLabel="contractor"
                   bindValue="id"
                   placeholder="Seleccione el contratista"
                   [searchable]="true"
                   formControlName="contractor"
-                  (change)="onContractorSelected($event)"
                   class="w-full shadow-inner p-4 border-0 bg-base-100"
+                  (change)="onContractorChange($event)"
                 >
                 </ng-select>
                 @if (controlHasError('contractor')) {
@@ -156,13 +156,13 @@
                 <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold">Número de documento</label>
                 <ng-select
                   [items]="contractors"
-                  bindLabel="businessDocumentNumber"
+                  bindLabel="contractorDocument"
                   bindValue="id"
                   placeholder="Digite o seleccione número de documento"
                   [searchable]="true"
                   formControlName="contractorDocument"
-                  (change)="onContractorDocumentSelected($event)"
                   class="w-full shadow-inner p-4 border-0 bg-base-100"
+                  (change)="onContractorDocumentChange($event)"
                 >
                 </ng-select>
                 @if (controlHasError('contractorDocument')) {
@@ -174,36 +174,34 @@
             <!-- Lugar de expedición -->
             <div class="mb-4">
               <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold">Lugar de expedición</label>
+
               <input
-                formControlName="expeditionAddress"
                 class="w-full shadow-inner p-4 border-0 bg-base-100"
                 type="text"
                 placeholder="Ciudad / Departamento"
+                [value]="selectedContractor?.expeditionAddress || ''"
+                disabled
               />
-              @if (controlHasError('expeditionAddress')) {
-              <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('expeditionAddress') }}</span>
-              }
             </div>
 
             <!-- Fecha de nacimiento y Sexo -->
             <div class="md:flex mb-4">
               <div class="md:flex-1 md:pr-3 mb-4">
                 <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold">Fecha de nacimiento</label>
-                <input formControlName="birthDate" class="w-full shadow-inner p-4 border-0 bg-base-100" type="date" />
-                @if (controlHasError('birthDate')) {
-                <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('birthDate') }}</span>
-                }
+                <input
+                  class="w-full shadow-inner p-4 border-0 bg-base-100"
+                  type="date"
+                  [value]="selectedContractor?.birthDate?.slice(0, 10) || ''"
+                  disabled
+                />
               </div>
               <div class="md:flex-1 md:pl-3">
                 <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold">Sexo</label>
-                <select formControlName="genre" class="w-full shadow-inner p-4 border-0 bg-base-100">
+                <select [value]="selectedContractor?.genre || ''" disabled class="w-full shadow-inner p-4 border-0 bg-base-100">
                   <option disabled selected>Seleccione el sexo</option>
-                  <option>Masculino</option>
-                  <option>Femenino</option>
+                  <option [value]="'M'">Masculino</option>
+                  <option [value]="'F'">Femenino</option>
                 </select>
-                @if (controlHasError('genre')) {
-                <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('genre') }}</span>
-                }
               </div>
             </div>
           </div>
