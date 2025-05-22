@@ -1,0 +1,40 @@
+<!-- lg:overflow-auto mb-12 pb-20 not-sm:px-4" -->
+
+<body class="min-h-screen bg-base-100 text-base-content leading-normal overflow-x-hidden flex items-center justify-center not-sm:px-4">
+  <main class="max-w-lg w-full space-y-8 text-center">
+    <div class="text-6xl">🚫</div>
+
+    <h1 class="text-2xl font-bold">Funcionalidad no incluida en tu suscripción</h1>
+
+    <p class="text-base text-gray-500">
+      Esta sección requiere un plan superior o una licencia especial. Si deseas activarla, déjanos tu correo y te contactaremos a la
+      brevedad.
+    </p>
+
+    <form [formGroup]="requestUpgradeForm" (ngSubmit)="onSubmit()" class="space-y-4">
+      <input type="email" formControlName="email" class="input input-bordered w-full" placeholder="Tu correo electrónico" required />
+
+      <button type="submit" class="btn btn-primary w-full">Solicitar Acceso</button>
+    </form>
+
+    <p class="text-sm text-gray-400">
+      ¿Tienes dudas? <a href="mailto:contacto@pleroma.com" class="link link-hover text-primary">Contáctanos</a>.
+    </p>
+  </main>
+</body>
+
+@if (hasFormError()) {
+
+<div role="alert" class="alert alert-error fixed top-20 right-5 animate-fade-left animate-duration-[750ms] animate-ease-out">
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+    />
+  </svg>
+  <span>Dirección de correo Invalida</span>
+</div>
+
+}

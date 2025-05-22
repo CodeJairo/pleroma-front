@@ -20,3 +20,7 @@
   color: #000 !important;
   cursor: pointer !important;
 }
+
+.p-menu-active {
+  @apply text-primary font-semibold border-b-2 border-primary;
+}
