@@ -1,487 +1,437 @@
-<body class="min-h-screen leading-normal overflow-x-hidden lg:overflow-auto mb-12 pb-20 not-sm:px-4">
-  <main class="flex-1 md:p-0 lg:pt-8 lg:px-8 md:ml-24 flex flex-col">
-    <section class="rounded-4xl shadow-xl/20 p-4 bg-base-200">
-      <div class="md:flex">
-        <h2 class="uppercase tracking-wide mb-6 text-xl">Información Maestra del Proceso</h2>
-      </div>
+<body class="min-h-screen bg-base-100 text-base-content">
+  <main class="max-w-5xl mx-auto px-4 pt-10 flex flex-col items-center">
+    <h1 class="text-3xl font-bold mb-8 text-center not-sm:text-xl text-nowrap">🗝️ Información Maestra del Proceso</h1>
 
-      <form [formGroup]="masterInfoForm" (ngSubmit)="onSubmit()">
-        <!-- Datos del contrato -->
-        <div class="md:flex mb-8">
-          <div class="md:w-1/3">
-            <legend class="uppercase tracking-wide text-sm">Datos del contrato</legend>
+    <form [formGroup]="masterInfoForm" (ngSubmit)="onSubmit()" class="space-y-6 w-full" >
+      <!-- DATOS DEL CONTRATO -->
+      <div class="collapse collapse-arrow bg-base-200 shadow-md rounded-box collapse-open" id="datos-contrato">
+        <input type="checkbox" class="peer" checked />
+        <div class="collapse-title text-xl font-semibold">📑 Datos del Contrato</div>
+        <div class="collapse-content space-y-6">
+          <!-- Centros de costo -->
+          <div>
+            <label class="block text-sm font-bold mb-2 text-center uppercase">Aplicación centro de costo domiciliario</label>
+            <div formGroupName="costCenters" class="flex flex-wrap justify-center gap-3">
+              <label class="flex items-center gap-2">
+                <input formControlName="aqueduct" type="checkbox" class="checkbox checkbox-sm" /> Acueducto
+              </label>
+              <label class="flex items-center gap-2">
+                <input formControlName="sewer" type="checkbox" class="checkbox checkbox-sm" /> Alcantarillado
+              </label>
+              <label class="flex items-center gap-2">
+                <input formControlName="cleaning" type="checkbox" class="checkbox checkbox-sm" /> Aseo
+              </label>
+              <label class="flex items-center gap-2">
+                <input formControlName="energy" type="checkbox" class="checkbox checkbox-sm" /> Energía
+              </label>
+              <label class="flex items-center gap-2">
+                <input formControlName="gas" type="checkbox" class="checkbox checkbox-sm" /> Gas
+              </label>
+            </div>
           </div>
 
-          <div class="md:flex-1 mt-2 mb:mt-0 md:px-3">
-            <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold text-center pb-2">
-              Aplicación centro de costo domiciliario
-            </label>
-
-            <!-- Cost Centers -->
-            <div formGroupName="costCenters" class="flex justify-around not-sm:flex-col gap-1 mb-3">
-              <div>
-                <input formControlName="aqueduct" type="checkbox" class="checkbox" />
-                <label class="pl-1">Acueducto</label>
-              </div>
-              <div>
-                <input formControlName="sewer" type="checkbox" class="checkbox" />
-                <label class="pl-1">Alcantarillado</label>
-              </div>
-              <div>
-                <input formControlName="cleaning" type="checkbox" class="checkbox" />
-                <label class="pl-1">Aseo</label>
-              </div>
-              <div>
-                <input formControlName="energy" type="checkbox" class="checkbox" />
-                <label class="pl-1">Energía</label>
-              </div>
-              <div>
-                <input formControlName="gas" type="checkbox" class="checkbox" />
-                <label class="pl-1">Gas</label>
-              </div>
+          <!-- Modalidad, Denominación -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="label font-bold text-sm uppercase">Modalidad</label>
+              <select formControlName="modality" class="select select-bordered w-full">
+                <option disabled selected>Seleccione la modalidad</option>
+                <option>Invitación privada</option>
+                <option>Invitación Pública</option>
+              </select>
             </div>
-            @if (groupHasError('costCenters')) {
-            <span class="text-xs mb-4 font-thin text-black flex bg-red-400 rounded-full justify-center">
-              {{ getGroupErrorMessage('costCenters') }}
-            </span>
-            }
-
-            <!-- Modality & Denomination -->
-            <div class="md:flex mb-4">
-              <div class="md:flex-1 md:pr-3 mb-4">
-                <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold">Modalidad</label>
-                <select formControlName="modality" class="w-full shadow-inner p-4 border-0 bg-base-100">
-                  <option disabled selected>Seleccione la modalidad</option>
-                  <option>Invitación privada</option>
-                  <option>Invitación Publica</option>
-                </select>
-                @if (controlHasError('modality')) {
-                <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('modality') }}</span>
-                }
-              </div>
-
-              <div class="md:flex-1 md:pr-3 mb-4">
-                <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold">Denominación</label>
-                <select formControlName="denomination" class="w-full shadow-inner p-4 border-0 bg-base-100">
-                  <option disabled selected>Seleccione</option>
-                  <option>Orden Contractual</option>
-                  <option>Contrato</option>
-                </select>
-                @if (controlHasError('denomination')) {
-                <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('denomination', 6) }}</span>
-                }
-              </div>
+            <div>
+              <label class="label font-bold text-sm uppercase">Denominación</label>
+              <select formControlName="denomination" class="select select-bordered w-full">
+                <option disabled selected>Seleccione</option>
+                <option>Orden Contractual</option>
+                <option>Contrato</option>
+              </select>
             </div>
-            <!-- Tipología -->
-            <div class="md:flex-1 md:pr-3 mb-4">
-              <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold">Tipología</label>
-              <select formControlName="typology" class="w-full shadow-inner p-4 border-0 bg-base-100">
+          </div>
+
+          <!-- Tipología, Clase -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="label font-bold text-sm uppercase">Tipología</label>
+              <select formControlName="typology" class="select select-bordered w-full">
                 <option disabled selected>Seleccione la Tipología del contrato</option>
                 @for(option of typologyOptions; track option) {
                 <option [value]="option">{{ option }}</option>
                 }
               </select>
-              @if (controlHasError('typology')) {
-              <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('typology') }}</span>
-              }
             </div>
-
-            <!-- Clase -->
-            <div class="md:flex-1 md:pr-3 mb-4">
-              <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold">Clase</label>
-              <select formControlName="class" class="w-full shadow-inner p-4 border-0 bg-base-100">
+            <div>
+              <label class="label font-bold text-sm uppercase">Clase</label>
+              <select formControlName="class" class="select select-bordered w-full">
                 <option disabled selected>Seleccione la clase del contrato</option>
                 <option>Prestación de Servicios de Apoyo Profesional</option>
                 <option>Prestación de Servicios de Apoyo a la gestión</option>
                 <option>Prestación de Servicios de Apoyo a las labores operativas</option>
               </select>
-              @if (controlHasError('class')) {
-              <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('class') }}</span>
+            </div>
+          </div>
+
+          <!-- Número de orden, Fechas -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="label font-bold text-sm uppercase">Número de orden contractual</label>
+              <input formControlName="orderNumber" type="number" placeholder="####" class="input input-bordered w-full" />
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="label font-bold text-sm uppercase">Fecha inicio</label>
+                <input formControlName="startDate" type="date" class="input input-bordered w-full" />
+              </div>
+              <div>
+                <label class="label font-bold text-sm uppercase">Fecha final</label>
+                <input formControlName="endDate" type="date" class="input input-bordered w-full" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Contratista y Número de documento -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="label font-bold text-sm uppercase">Contratista</label>
+              <ng-select
+                [items]="contractors"
+                bindLabel="contractor"
+                bindValue="id"
+                placeholder="Seleccione el contratista"
+                [searchable]="true"
+                formControlName="contractor"
+                class="w-full shadow-inner p-4 border-0 bg-base-100"
+                (change)="onContractorChange($event)"
+              >
+              </ng-select>
+              @if (controlHasError('contractor')) {
+              <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('contractor') }}</span>
               }
             </div>
+            <div>
+              <label class="label font-bold text-sm uppercase">Número de documento</label>
+              <ng-select
+                [items]="contractors"
+                bindLabel="contractorDocument"
+                bindValue="id"
+                placeholder="Digite o seleccione número de documento"
+                [searchable]="true"
+                formControlName="contractorDocument"
+                class="w-full shadow-inner p-4 border-0 bg-base-100"
+                (change)="onContractorDocumentChange($event)"
+              >
+              </ng-select>
+              @if (controlHasError('contractorDocument')) {
+              <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('contractorDocument') }}</span>
+              }
+            </div>
+          </div>
 
-            <!-- Número de orden contractual -->
-            <div class="mt-3 mb-4">
-              <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold">Número de orden contractual</label>
+          <!-- Lugar de expedición -->
+          <div>
+            <label class="label font-bold text-sm uppercase">Lugar de expedición</label>
+            <input
+              class="input input-bordered w-full"
+              type="text"
+              placeholder="Ciudad / Departamento"
+              [value]="selectedContractor?.expeditionAddress || ''"
+              disabled
+            />
+          </div>
+
+          <!-- Fecha de nacimiento y Sexo -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="label font-bold text-sm uppercase">Fecha de nacimiento</label>
+              <input
+                class="input input-bordered w-full"
+                type="date"
+                [value]="selectedContractor?.birthDate?.slice(0, 10) || ''"
+                disabled
+              />
+            </div>
+            <div>
+              <label class="label font-bold text-sm uppercase">Sexo</label>
+              <select [value]="selectedContractor?.genre || ''" disabled class="input input-bordered w-full">
+                <option disabled selected>Seleccione el sexo</option>
+                <option [value]="'M'">Masculino</option>
+                <option [value]="'F'">Femenino</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- OBJETO Y ACTIVIDADES -->
+      <div class="collapse collapse-arrow bg-base-200 shadow-md rounded-box collapse-open" id="objeto-actividades">
+        <input type="checkbox" class="peer" checked />
+        <div class="collapse-title text-xl font-semibold">📝 Objeto y Actividades</div>
+        <div class="collapse-content space-y-6">
+          <!-- Objeto Contractual -->
+          <div class="mb-4">
+            <label class="block uppercase tracking-wide text-xs font-bold">Objeto Contractual</label>
+            <input
+              formControlName="contractObject"
+              class="w-full shadow-inner p-4 border-0 bg-base-100 placeholder:opacity-40 placeholder:italic"
+              type="text"
+              placeholder="Ej: Prestación de servicios de apoyo a la gestión para la coordinación y planificación de las labores operativas en la cabecera municipal"
+            />
+            @if (controlHasError('contractObject')) {
+            <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('contractObject') }}</span>
+            }
+          </div>
+
+          <!-- Alcance -->
+          <div class="mb-4">
+            <label class="block uppercase tracking-wide text-xs font-bold">Alcance</label>
+            <textarea
+              formControlName="scope"
+              class="w-full shadow-inner p-4 border-0 bg-base-100 placeholder:opacity-40 placeholder:italic"
+              rows="3"
+              placeholder="Describa el alcance del contrato"
+            ></textarea>
+            @if (controlHasError('scope')) {
+            <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('scope') }}</span>
+            }
+          </div>
+
+          <!-- Lugar de ejecución -->
+          <div class="mb-4">
+            <label class="block uppercase tracking-wide text-xs font-bold">Lugar de ejecución</label>
+            <input
+              formControlName="executionPlace"
+              class="w-full shadow-inner p-4 border-0 bg-base-100"
+              type="text"
+              placeholder="Ciudad / Departamento"
+            />
+            @if (controlHasError('executionPlace')) {
+            <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('executionPlace') }}</span>
+            }
+          </div>
+
+          <!-- Duración hasta -->
+          <div class="mb-4">
+            <label class="block uppercase tracking-wide text-xs font-bold">Duración hasta</label>
+            <input formControlName="durationUntil" class="w-full shadow-inner p-4 border-0 bg-base-100" type="date" />
+            @if (controlHasError('durationUntil')) {
+            <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('durationUntil') }}</span>
+            }
+          </div>
+
+          <!-- Valor del contrato y Valor en letras -->
+          <div class="md:flex mb-4">
+            <div class="md:flex-1 md:pr-3 mb-4">
+              <label class="block uppercase tracking-wide text-xs font-bold">Valor del contrato</label>
+              <input
+                formControlName="contractValue"
+                class="w-full shadow-inner p-4 border-0 bg-base-100"
+                type="number"
+                placeholder="Digite el valor del contrato"
+              />
+              @if (controlHasError('contractValue')) {
+              <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('contractValue') }}</span>
+              }
+            </div>
+            <div class="md:flex-1 md:pl-3">
+              <label class="block uppercase tracking-wide text-xs font-bold">Valor del contrato en letras</label>
+              <input
+                formControlName="contractValueInWords"
+                class="w-full shadow-inner p-4 border-0 bg-base-100"
+                type="text"
+                placeholder="Valor en letras"
+              />
+            </div>
+          </div>
+
+          <!-- Valor actas parciales y Valor en letras -->
+          <div class="md:flex mb-4">
+            <div class="md:flex-1 md:pr-3 mb-4">
+              <label class="block uppercase tracking-wide text-xs font-bold">Valor actas parciales</label>
+              <input
+                formControlName="partialActsValue"
+                class="w-full shadow-inner p-4 border-0 bg-base-100"
+                type="number"
+                placeholder="Digite el valor de las actas parciales"
+              />
+              @if (controlHasError('partialActsValue')) {
+              <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('partialActsValue') }}</span>
+              }
+            </div>
+            <div class="md:flex-1 md:pl-3">
+              <label class="block uppercase tracking-wide text-xs font-bold">Valor actas parciales en letras</label>
+              <input
+                formControlName="partialActsValueInWords"
+                class="w-full shadow-inner p-4 border-0 bg-base-100"
+                type="text"
+                placeholder="Valor en letras"
+              />
+            </div>
+          </div>
+
+          <!-- Forma de pago -->
+          <div class="mb-4">
+            <label class="block uppercase tracking-wide text-xs font-bold">Forma de pago</label>
+            <select formControlName="paymentMethod" class="w-full shadow-inner p-4 border-0 bg-base-100">
+              <option disabled selected>Seleccione la forma de pago</option>
+              <option>Total</option>
+              <option>Parcial</option>
+            </select>
+            @if (controlHasError('paymentMethod')) {
+            <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('paymentMethod') }}</span>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- SUPERVISIÓN -->
+      <div class="collapse collapse-arrow bg-base-200 shadow-md rounded-box collapse-open" id="supervision">
+        <input type="checkbox" class="peer" checked />
+        <div class="collapse-title text-xl font-semibold">🧭 Supervisión y Clasificación Económica</div>
+        <div class="collapse-content space-y-6">
+          <!-- Nombre del supervisor y Número de documento -->
+          <div class="md:flex mb-4">
+            <div class="md:flex-1 md:pr-3 mb-4">
+              <label class="block uppercase tracking-wide text-xs font-bold">Nombre del supervisor</label>
+              <input
+                formControlName="supervisorName"
+                class="w-full shadow-inner p-4 border-0 bg-base-100"
+                type="text"
+                placeholder="Digite el nombre del supervisor"
+              />
+              @if (controlHasError('supervisorName')) {
+              <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('supervisorName') }}</span>
+              }
+            </div>
+            <div class="md:flex-1 md:pl-3">
+              <label class="block uppercase tracking-wide text-xs font-bold">Número de documento</label>
+              <input
+                formControlName="supervisorDocument"
+                class="w-full shadow-inner p-4 border-0 bg-base-100"
+                type="text"
+                placeholder="######"
+              />
+              @if (controlHasError('supervisorDocument')) {
+              <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('supervisorDocument') }}</span>
+              }
+            </div>
+          </div>
+
+          <!-- Número de orden contractual y Objeto -->
+          <div class="md:flex mb-4">
+            <div class="md:flex-1 md:pr-3 mb-4">
+              <label class="block uppercase tracking-wide text-xs font-bold">Número de orden contractual</label>
               <input
                 formControlName="orderNumber"
                 class="w-full shadow-inner p-4 border-0 bg-base-100"
                 type="number"
                 placeholder="Digite el número de orden contractual"
               />
-              @if (controlHasError('orderNumber')) {
-              <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('orderNumber') }}</span>
-              }
             </div>
-
-            <!-- Fecha de inicio y fecha final -->
-            <div class="md:flex mb-4">
-              <div class="md:flex-1 md:pr-3 mb-4">
-                <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold">Fecha de inicio</label>
-                <input formControlName="startDate" class="w-full shadow-inner p-4 border-0 bg-base-100" type="date" />
-                @if (controlHasError('startDate')) {
-                <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('startDate') }}</span>
-                }
-              </div>
-              <div class="md:flex-1 md:pl-3">
-                <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold">Fecha final</label>
-                <input formControlName="endDate" class="w-full shadow-inner p-4 border-0 bg-base-100" type="date" />
-                @if (controlHasError('endDate')) {
-                <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('endDate') }}</span>
-                }
-              </div>
-            </div>
-
-            <!-- Contratista y Número de documento -->
-            <div class="md:flex mb-4">
-              <div class="md:flex-1 md:pr-3 mb-4">
-                <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold">Contratista</label>
-                <ng-select
-                  [items]="contractors"
-                  bindLabel="contractor"
-                  bindValue="id"
-                  placeholder="Seleccione el contratista"
-                  [searchable]="true"
-                  formControlName="contractor"
-                  class="w-full shadow-inner p-4 border-0 bg-base-100"
-                  (change)="onContractorChange($event)"
-                >
-                </ng-select>
-                @if (controlHasError('contractor')) {
-                <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('contractor') }}</span>
-                }
-              </div>
-
-              <div class="md:flex-1 md:pl-3">
-                <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold">Número de documento</label>
-                <ng-select
-                  [items]="contractors"
-                  bindLabel="contractorDocument"
-                  bindValue="id"
-                  placeholder="Digite o seleccione número de documento"
-                  [searchable]="true"
-                  formControlName="contractorDocument"
-                  class="w-full shadow-inner p-4 border-0 bg-base-100"
-                  (change)="onContractorDocumentChange($event)"
-                >
-                </ng-select>
-                @if (controlHasError('contractorDocument')) {
-                <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('contractorDocument') }}</span>
-                }
-              </div>
-            </div>
-
-            <!-- Lugar de expedición -->
-            <div class="mb-4">
-              <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold">Lugar de expedición</label>
-
-              <input
-                class="w-full shadow-inner p-4 border-0 bg-base-100"
-                type="text"
-                placeholder="Ciudad / Departamento"
-                [value]="selectedContractor?.expeditionAddress || ''"
-                disabled
-              />
-            </div>
-
-            <!-- Fecha de nacimiento y Sexo -->
-            <div class="md:flex mb-4">
-              <div class="md:flex-1 md:pr-3 mb-4">
-                <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold">Fecha de nacimiento</label>
-                <input
-                  class="w-full shadow-inner p-4 border-0 bg-base-100"
-                  type="date"
-                  [value]="selectedContractor?.birthDate?.slice(0, 10) || ''"
-                  disabled
-                />
-              </div>
-              <div class="md:flex-1 md:pl-3">
-                <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold">Sexo</label>
-                <select [value]="selectedContractor?.genre || ''" disabled class="w-full shadow-inner p-4 border-0 bg-base-100">
-                  <option disabled selected>Seleccione el sexo</option>
-                  <option [value]="'M'">Masculino</option>
-                  <option [value]="'F'">Femenino</option>
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Objeto y Actividades -->
-        <div class="md:flex mb-8">
-          <div class="md:w-1/3">
-            <legend class="uppercase tracking-wide text-sm">Objeto y Actividades</legend>
-          </div>
-
-          <div class="md:flex-1 mt-2 mb-0 md:px-3">
-            <!-- Objeto Contractual -->
-            <div class="mb-4">
-              <label class="block uppercase tracking-wide text-xs font-bold">Objeto Contractual</label>
+            <div class="md:flex-1 md:pl-3">
+              <label class="block uppercase tracking-wide text-xs font-bold">Objeto</label>
               <input
                 formControlName="contractObject"
-                class="w-full shadow-inner p-4 border-0 bg-base-100 placeholder:opacity-40 placeholder:italic"
-                type="text"
-                placeholder="Ej: Prestación de servicios de apoyo a la gestión para la coordinación y planificación de las labores operativas en la cabecera municipal"
-              />
-              @if (controlHasError('contractObject')) {
-              <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('contractObject') }}</span>
-              }
-            </div>
-
-            <!-- Alcance -->
-            <div class="mb-4">
-              <label class="block uppercase tracking-wide text-xs font-bold">Alcance</label>
-              <textarea
-                formControlName="scope"
-                class="w-full shadow-inner p-4 border-0 bg-base-100 placeholder:opacity-40 placeholder:italic"
-                rows="3"
-                placeholder="Describa el alcance del contrato"
-              ></textarea>
-              @if (controlHasError('scope')) {
-              <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('scope') }}</span>
-              }
-            </div>
-
-            <!-- Lugar de ejecución -->
-            <div class="mb-4">
-              <label class="block uppercase tracking-wide text-xs font-bold">Lugar de ejecución</label>
-              <input
-                formControlName="executionPlace"
                 class="w-full shadow-inner p-4 border-0 bg-base-100"
                 type="text"
-                placeholder="Ciudad / Departamento"
+                placeholder="Describa el objeto"
               />
-              @if (controlHasError('executionPlace')) {
-              <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('executionPlace') }}</span>
-              }
-            </div>
-
-            <!-- Duración hasta -->
-            <div class="mb-4">
-              <label class="block uppercase tracking-wide text-xs font-bold">Duración hasta</label>
-              <input formControlName="durationUntil" class="w-full shadow-inner p-4 border-0 bg-base-100" type="date" />
-              @if (controlHasError('durationUntil')) {
-              <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('durationUntil') }}</span>
-              }
-            </div>
-
-            <!-- Valor del contrato y Valor en letras -->
-            <div class="md:flex mb-4">
-              <div class="md:flex-1 md:pr-3 mb-4">
-                <label class="block uppercase tracking-wide text-xs font-bold">Valor del contrato</label>
-                <input
-                  formControlName="contractValue"
-                  class="w-full shadow-inner p-4 border-0 bg-base-100"
-                  type="number"
-                  placeholder="Digite el valor del contrato"
-                />
-                @if (controlHasError('contractValue')) {
-                <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('contractValue') }}</span>
-                }
-              </div>
-              <div class="md:flex-1 md:pl-3">
-                <label class="block uppercase tracking-wide text-xs font-bold">Valor del contrato en letras</label>
-                <input
-                  formControlName="contractValueInWords"
-                  class="w-full shadow-inner p-4 border-0 bg-base-100"
-                  type="text"
-                  placeholder="Valor en letras"
-                />
-              </div>
-            </div>
-
-            <!-- Valor actas parciales y Valor en letras -->
-            <div class="md:flex mb-4">
-              <div class="md:flex-1 md:pr-3 mb-4">
-                <label class="block uppercase tracking-wide text-xs font-bold">Valor actas parciales</label>
-                <input
-                  formControlName="partialActsValue"
-                  class="w-full shadow-inner p-4 border-0 bg-base-100"
-                  type="number"
-                  placeholder="Digite el valor de las actas parciales"
-                />
-                @if (controlHasError('partialActsValue')) {
-                <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('partialActsValue') }}</span>
-                }
-              </div>
-              <div class="md:flex-1 md:pl-3">
-                <label class="block uppercase tracking-wide text-xs font-bold">Valor actas parciales en letras</label>
-                <input
-                  formControlName="partialActsValueInWords"
-                  class="w-full shadow-inner p-4 border-0 bg-base-100"
-                  type="text"
-                  placeholder="Valor en letras"
-                />
-              </div>
-            </div>
-
-            <!-- Forma de pago -->
-            <div class="mb-4">
-              <label class="block uppercase tracking-wide text-xs font-bold">Forma de pago</label>
-              <select formControlName="paymentMethod" class="w-full shadow-inner p-4 border-0 bg-base-100">
-                <option disabled selected>Seleccione la forma de pago</option>
-                <option>Total</option>
-                <option>Parcial</option>
-              </select>
-              @if (controlHasError('paymentMethod')) {
-              <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('paymentMethod') }}</span>
-              }
             </div>
           </div>
-        </div>
 
-        <!-- SUPERVISIÓN y Clasificación económica -->
-        <div class="md:flex mb-8">
-          <div class="md:w-1/3">
-            <legend class="uppercase tracking-wide text-sm">SUPERVISIÓN y Clasificación económica</legend>
+          <!-- Plan de adquisiciones -->
+          <div class="mb-4">
+            <label class="block uppercase tracking-wide text-xs font-bold">Plan de adquisiciones</label>
+            <textarea
+              formControlName="acquisitionPlan"
+              class="w-full shadow-inner p-4 border-0 bg-base-100 placeholder:opacity-40 placeholder:italic"
+              rows="3"
+              placeholder="Describa el plan de adquisiciones"
+            ></textarea>
+            @if (controlHasError('acquisitionPlan')) {
+            <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('acquisitionPlan') }}</span>
+            }
           </div>
 
-          <div class="md:flex-1 mt-2 mb:0 md:px-3">
-            <!-- Nombre del supervisor y Número de documento -->
-            <div class="md:flex mb-4">
-              <div class="md:flex-1 md:pr-3 mb-4">
-                <label class="block uppercase tracking-wide text-xs font-bold">Nombre del supervisor</label>
-                <input
-                  formControlName="supervisorName"
-                  class="w-full shadow-inner p-4 border-0 bg-base-100"
-                  type="text"
-                  placeholder="Digite el nombre del supervisor"
-                />
-                @if (controlHasError('supervisorName')) {
-                <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('supervisorName') }}</span>
-                }
-              </div>
-              <div class="md:flex-1 md:pl-3">
-                <label class="block uppercase tracking-wide text-xs font-bold">Número de documento</label>
-                <input
-                  formControlName="supervisorDocument"
-                  class="w-full shadow-inner p-4 border-0 bg-base-100"
-                  type="text"
-                  placeholder="######"
-                />
-                @if (controlHasError('supervisorDocument')) {
-                <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('supervisorDocument') }}</span>
-                }
-              </div>
-            </div>
+          <!-- Plan de desarrollo -->
+          <div class="mb-4">
+            <label class="block uppercase tracking-wide text-xs font-bold">Plan de desarrollo</label>
+            <textarea
+              formControlName="developmentPlan"
+              class="w-full shadow-inner p-4 border-0 bg-base-100 placeholder:opacity-40 placeholder:italic"
+              rows="3"
+              placeholder="Describa el plan de desarrollo"
+            ></textarea>
+            @if (controlHasError('developmentPlan')) {
+            <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('developmentPlan') }}</span>
+            }
+          </div>
 
-            <!-- Número de orden contractual y Objeto -->
-            <div class="md:flex mb-4">
-              <div class="md:flex-1 md:pr-3 mb-4">
-                <label class="block uppercase tracking-wide text-xs font-bold">Número de orden contractual</label>
-                <input
-                  formControlName="orderNumber"
-                  class="w-full shadow-inner p-4 border-0 bg-base-100"
-                  type="number"
-                  placeholder="Digite el número de orden contractual"
-                />
-              </div>
-              <div class="md:flex-1 md:pl-3">
-                <label class="block uppercase tracking-wide text-xs font-bold">Objeto</label>
-                <input
-                  formControlName="contractObject"
-                  class="w-full shadow-inner p-4 border-0 bg-base-100"
-                  type="text"
-                  placeholder="Describa el objeto"
-                />
-              </div>
-            </div>
+          <!-- Línea estratégica -->
+          <div class="mb-4">
+            <label class="block uppercase tracking-wide text-xs font-bold">Línea estratégica</label>
+            <textarea
+              formControlName="strategicLine"
+              class="w-full shadow-inner p-4 border-0 bg-base-100 placeholder:opacity-40 placeholder:italic"
+              rows="3"
+              placeholder="Describa la línea estratégica"
+            ></textarea>
+            @if (controlHasError('strategicLine')) {
+            <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('strategicLine') }}</span>
+            }
+          </div>
 
-            <!-- Plan de adquisiciones -->
-            <div class="mb-4">
-              <label class="block uppercase tracking-wide text-xs font-bold">Plan de adquisiciones</label>
-              <textarea
-                formControlName="acquisitionPlan"
-                class="w-full shadow-inner p-4 border-0 bg-base-100 placeholder:opacity-40 placeholder:italic"
-                rows="3"
-                placeholder="Describa el plan de adquisiciones"
-              ></textarea>
-              @if (controlHasError('acquisitionPlan')) {
-              <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('acquisitionPlan') }}</span>
-              }
-            </div>
+          <!-- Nombre del Sector -->
+          <div class="mb-4">
+            <label class="block uppercase tracking-wide text-xs font-bold">Nombre del Sector</label>
+            <input
+              formControlName="sectorName"
+              class="w-full shadow-inner p-4 border-0 bg-base-100"
+              type="text"
+              placeholder="Digite el nombre del sector"
+            />
+            @if (controlHasError('sectorName')) {
+            <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('sectorName') }}</span>
+            }
+          </div>
 
-            <!-- Plan de desarrollo -->
-            <div class="mb-4">
-              <label class="block uppercase tracking-wide text-xs font-bold">Plan de desarrollo</label>
-              <textarea
-                formControlName="developmentPlan"
-                class="w-full shadow-inner p-4 border-0 bg-base-100 placeholder:opacity-40 placeholder:italic"
-                rows="3"
-                placeholder="Describa el plan de desarrollo"
-              ></textarea>
-              @if (controlHasError('developmentPlan')) {
-              <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('developmentPlan') }}</span>
-              }
-            </div>
+          <!-- Clasificador de Bienes y Servicios -->
+          <div class="mb-4">
+            <label class="block uppercase tracking-wide text-xs font-bold">Clasificador de Bienes y Servicios</label>
+            <textarea
+              formControlName="classifier"
+              class="w-full shadow-inner p-4 border-0 bg-base-100 placeholder:opacity-40 placeholder:italic"
+              rows="3"
+              placeholder="Ej: Código UNSPSC 72103304 Producto : Servicios de barrido de calles o parqueaderos."
+            ></textarea>
+            @if (controlHasError('classifier')) {
+            <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('classifier') }}</span>
+            }
+          </div>
 
-            <!-- Línea estratégica -->
-            <div class="mb-4">
-              <label class="block uppercase tracking-wide text-xs font-bold">Línea estratégica</label>
-              <textarea
-                formControlName="strategicLine"
-                class="w-full shadow-inner p-4 border-0 bg-base-100 placeholder:opacity-40 placeholder:italic"
-                rows="3"
-                placeholder="Describa la línea estratégica"
-              ></textarea>
-              @if (controlHasError('strategicLine')) {
-              <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('strategicLine') }}</span>
-              }
-            </div>
-
-            <!-- Nombre del Sector -->
-            <div class="mb-4">
-              <label class="block uppercase tracking-wide text-xs font-bold">Nombre del Sector</label>
-              <input
-                formControlName="sectorName"
-                class="w-full shadow-inner p-4 border-0 bg-base-100"
-                type="text"
-                placeholder="Digite el nombre del sector"
-              />
-              @if (controlHasError('sectorName')) {
-              <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('sectorName') }}</span>
-              }
-            </div>
-
-            <!-- Clasificador de Bienes y Servicios -->
-            <div class="mb-4">
-              <label class="block uppercase tracking-wide text-xs font-bold">Clasificador de Bienes y Servicios</label>
-              <textarea
-                formControlName="classifier"
-                class="w-full shadow-inner p-4 border-0 bg-base-100 placeholder:opacity-40 placeholder:italic"
-                rows="3"
-                placeholder="Ej: Código UNSPSC 72103304 Producto : Servicios de barrido de calles o parqueaderos."
-              ></textarea>
-              @if (controlHasError('classifier')) {
-              <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('classifier') }}</span>
-              }
-            </div>
-
-            <!-- CIIU -->
-            <div class="mb-4">
-              <label class="block uppercase tracking-wide text-xs font-bold"
-                >CIIU (Clasificación Industrial Internacional Uniforme)</label
-              >
-              <input
-                formControlName="ciiu"
-                class="w-full shadow-inner p-4 border-0 bg-base-100"
-                type="number"
-                placeholder="Digite el código CIIU"
-              />
-              @if (controlHasError('ciiu')) {
-              <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('ciiu') }}</span>
-              }
-            </div>
+          <!-- CIIU -->
+          <div class="mb-4">
+            <label class="block uppercase tracking-wide text-xs font-bold"
+              >CIIU (Clasificación Industrial Internacional Uniforme)</label
+            >
+            <input
+              formControlName="ciiu"
+              class="w-full shadow-inner p-4 border-0 bg-base-100"
+              type="number"
+              placeholder="Digite el código CIIU"
+            />
+            @if (controlHasError('ciiu')) {
+            <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('ciiu') }}</span>
+            }
           </div>
         </div>
+      </div>
 
-        <div class="divider"></div>
-
-        <div class="flex justify-around md:justify-end md:gap-3">
-          <input (click)="onReset()" class="w-24 btn btn-warning" type="reset" value="Reset" />
-          <input class="w-24 btn btn-success" type="submit" value="Guardar" />
-        </div>
-      </form>
-    </section>
+      <!-- BOTONES -->
+      <div class="flex justify-end gap-4">
+        <button type="reset" class="btn btn-warning" (click)="onReset()">Reset</button>
+        <button type="submit" class="btn btn-success">Guardar</button>
+      </div>
+    </form>
   </main>
 </body>

@@ -1,180 +1,149 @@
-<br />
-<body class="min-h-screen leading-normal overflow-x-hidden lg:overflow-auto mb-12 px-4 md:px-8 lg:px-0 not-lg:pb-10 pt-4">
-  <main class="flex-1 lg:p-0 lg:pt-8 lg:px-8 lg:ml-24 flex flex-col">
-    <section class="rounded-4xl shadow-xl/20 p-4 bg-base-200">
-      <div class="lg:flex">
-        <h2 class="uppercase tracking-wide mb-6 text-xl">IMPUTACIÓN PRESUPUESTAL</h2>
+<body class="min-h-screen bg-base-100 text-base-content">
+  <main class="max-w-5xl mx-auto p-6 space-y-8">
+    <!-- TÍTULO -->
+    <div class="text-center">
+      <h1 class="text-3xl font-bold flex-nowrap not-sm:text-xl text-nowrap">📋 Imputación Presupuestal</h1>
+    </div>
+    <!-- FORMULARIO -->
+    <form [formGroup]="budgetInformationForm" (ngSubmit)="onSubmit()" class="space-y-8">
+      <!-- CERTIFICADO -->
+      <div class="card shadow-md bg-base-200 p-6 space-y-4">
+        <h2 class="text-xl font-semibold not-sm:text-center">
+          <span class="not-sm:hidden">📑</span> Certificado de Disponibilidad Presupuestal
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="label font-bold text-sm">N. Certificado</label>
+            <input
+              formControlName="certificateNumber"
+              class="input input-bordered w-full"
+              type="text"
+              placeholder="Digite el número del certificado"
+              (keypress)="allowOnlyNumbers($event)"
+            />
+
+            @if (controlHasError('certificateNumber')) {
+            <span class="text-xs font-thin text-error">{{ getErrorMessage('certificateNumber', 3) }}</span>
+            }
+          </div>
+          <div>
+            <label class="label font-bold text-sm">Fecha de expedición</label>
+            <input formControlName="issuanceDate" class="input input-bordered w-full" type="date" />
+            @if (controlHasError('issuanceDate')) {
+            <span class="text-xs font-thin text-error">{{ getErrorMessage('issuanceDate') }}</span>
+            }
+          </div>
+        </div>
+      </div>
+      <!-- RUBROS -->
+      <div class="card shadow-md bg-base-200 p-6 space-y-6">
+        <h2 class="text-xl font-semibold">💼 Rubros</h2>
+
+        <!-- Rubros Dinámicos -->
+        <div formArrayName="rubros" class="space-y-6">
+          @for (control of rubrosArray.controls; track control; let i = $index) {
+          <div [formGroupName]="i" class="grid grid-cols-1 md:grid-cols-12 gap-4 bg-base-300 p-4 rounded-box shadow-inner">
+            <div class="md:col-span-4">
+              <label class="label font-bold text-sm">Nombre</label>
+              <input formControlName="name" type="text" class="input input-bordered w-full" placeholder="Nombre del rubro" />
+              <div class="min-h-[1.25rem]">
+                @if (controlHasError('rubros.' + i + '.name')) {
+                <span class="text-xs font-thin text-error">{{ getErrorMessage('rubros.' + i + '.name', 3) }}</span>
+                }
+              </div>
+            </div>
+            <div class="md:col-span-3">
+              <label class="label font-bold text-sm">Código</label>
+              <input
+                formControlName="code"
+                type="text"
+                class="input input-bordered w-full"
+                placeholder="Código"
+                (keypress)="allowOnlyNumbers($event)"
+              />
+              <div class="min-h-[1.25rem]">
+                @if (controlHasError('rubros.' + i + '.code')) {
+                <span class="text-xs font-thin text-error">{{ getErrorMessage('rubros.' + i + '.code', 3) }}</span>
+                }
+              </div>
+            </div>
+            <div class="md:col-span-3">
+              <label class="label font-bold text-sm">Cantidad asignada</label>
+              <input
+                formControlName="assignedAmount"
+                type="number"
+                class="input input-bordered w-full"
+                placeholder="0.00"
+                (keyup)="onRubroChange()"
+              />
+              <div class="min-h-[1.25rem]">
+                @if (controlHasError('rubros.' + i + '.assignedAmount')) {
+                <span class="text-xs font-thin text-error">{{ getErrorMessage('rubros.' + i + '.assignedAmount') }}</span>
+                }
+              </div>
+            </div>
+            <div class="md:col-span-2 flex items-center">
+              <button
+                type="button"
+                class="btn btn-error w-full"
+                (click)="removeRubro(i); onRubroChange()"
+                [disabled]="rubrosArray.length === 1"
+              >
+                Eliminar
+              </button>
+            </div>
+          </div>
+          }
+        </div>
+
+        <!-- TOTAL + BOTÓN EN FILA -->
+        <div class="flex flex-col md:flex-row justify-between items-end gap-4 border-t pt-4">
+          <!-- TOTAL -->
+          <div class="w-full md:w-1/3">
+            <label class="label font-bold text-sm">Total asignado</label>
+            <input
+              formControlName="totalAssignedAmount"
+              type="number"
+              class="input input-bordered w-full text-right"
+              [value]="rubrosTotal()"
+              [disabled]="true"
+            />
+          </div>
+
+          <!-- BOTÓN AGREGAR -->
+          <div class="text-end">
+            <button type="button" (click)="addRubro()" class="btn btn-accent w-full md:w-auto">➕ Agregar Rubro</button>
+          </div>
+        </div>
       </div>
 
-      <form [formGroup]="budgetInformationForm" (ngSubmit)="onSubmit()">
-        <div class="lg:flex mb-8">
-          <div class="lg:w-1/3">
-            <legend class="uppercase tracking-wide text-sm not-sm:text-center">Certificado de disponibilidad Presupuestal</legend>
-          </div>
-
-          <div class="lg:flex-1 mt-2 mb:mt-0 lg:px-3">
-            <div class="lg:flex mb-4">
-              <div class="lg:flex-1 lg:pr-3">
-                <label
-                  class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold text-nowrap overflow-hidden overflow-ellipsis"
-                  >N. Certificado de disponibilidad Presupuestal
-                </label>
-                <input
-                  formControlName="certificateNumber"
-                  class="w-full shadow-inner p-4 border-0 bg-base-100"
-                  type="text"
-                  name="document_number"
-                  placeholder="Digite el número del certificado"
-                  (keypress)="allowOnlyNumbers($event)"
-                />
-                @if (controlHasError('certificateNumber')) {
-                <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('certificateNumber', 3) }}</span>
-                }
-              </div>
-              <div class="lg:flex-1 lg:pl-3 not-lg:mt-3">
-                <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold text-nowrap"
-                  >Fecha de expedición</label
-                >
-                <input formControlName="issuanceDate" class="w-full shadow-inner p-4 border-0 bg-base-100" type="date" />
-                @if (controlHasError('issuanceDate')) {
-                <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('issuanceDate') }}</span>
-                }
-              </div>
-            </div>
-          </div>
+      <!-- BOTONES FINAL -->
+      <div class="flex justify-end gap-4 pt-4">
+        <button (click)="onReset()" type="reset" class="btn btn-warning">Reset</button>
+        <button type="submit" class="btn btn-success">Guardar</button>
+      </div>
+    </form>
+    <!-- ERRORES -->
+    @if(hasFetchError()) {
+    <div class="alert alert-error fixed top-20 right-5 z-50 shadow-lg">
+      <span>Error: {{ errorMessage() }}</span>
+    </div>
+    }
+    <!-- MODAL ÉXITO -->
+    @if(isFormPosted()) {
+    <input type="checkbox" id="success_modal" class="modal-toggle" [checked]="isFormPosted()" />
+    <div class="modal" role="dialog">
+      <div class="modal-box text-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-green-500 mb-4" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
+        <h3 class="font-bold text-lg">¡Registro exitoso!</h3>
+        <p class="py-4">La información presupuestal fue guardada correctamente.</p>
+        <div class="modal-action">
+          <label for="success_modal" (click)="closeSuccessModal()" class="btn btn-primary">Cerrar</label>
         </div>
-
-        <div class="lg:flex mb-8">
-          <div class="lg:w-1/3">
-            <legend class="uppercase tracking-wide text-sm">Rubros</legend>
-          </div>
-          <div class="lg:flex-1 mt-2 mb:mt-0 lg:px-3">
-            <div class="lg:flex lg:flex-col mb-4">
-              <!-- Rubro Array -->
-              <div formArrayName="rubros" class="flex-1">
-                @for (control of rubrosArray.controls; track control; let i = $index) {
-                <div [formGroupName]="i" class="lg:flex mb-4 items-center px-2 pb-2 not-lg:pt-2 rounded-2xl bg-base-300">
-                  <div class="lg:flex-2 lg:pr-3">
-                    <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold mt-2 text-nowrap"
-                      >Nombre del rubro
-                    </label>
-                    <input
-                      formControlName="name"
-                      class="w-full shadow-inner p-4 border-0 bg-base-100"
-                      type="text"
-                      name="document_number"
-                      placeholder="Digite el nombre del rubro"
-                    />
-                    @if (controlHasError('rubros.' + i + '.name')) {
-                    <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('rubros.' + i + '.name', 3) }}</span>
-                    }
-                  </div>
-                  <div class="lg:flex-2 lg:pr-3">
-                    <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold mt-2 text-nowrap"
-                      >Código del rubro
-                    </label>
-                    <input
-                      formControlName="code"
-                      class="w-full shadow-inner p-4 border-0 bg-base-100"
-                      type="text"
-                      name="document_number"
-                      placeholder="Digite el número del rubro"
-                      (keypress)="allowOnlyNumbers($event)"
-                    />
-                    @if (controlHasError('rubros.' + i + '.code')) {
-                    <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('rubros.' + i + '.code', 3) }}</span>
-                    }
-                  </div>
-                  <div class="lg:flex-2 lg:pr-3">
-                    <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold mt-2 text-nowrap"
-                      >Cantidad Asignada (Dinero)
-                    </label>
-                    <input
-                      formControlName="assignedAmount"
-                      class="w-full shadow-inner p-4 border-0 bg-base-100"
-                      type="number"
-                      name="document_number"
-                      placeholder="Digite la cantidad asignada"
-                      (keyup)="onRubroChange()"
-                    />
-
-                    @if (controlHasError('rubros.' + i + '.assignedAmount')) {
-                    <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('rubros.' + i + '.assignedAmount') }}</span>
-                    }
-                  </div>
-                  <div class="">
-                    <button
-                      type="button"
-                      class="btn btn-error mt-2 not-lg:hidden"
-                      (click)="removeRubro(i)"
-                      (click)="onRubroChange()"
-                      [disabled]="rubrosArray.length === 1"
-                    >
-                      X
-                    </button>
-                    <button
-                      type="button"
-                      class="btn btn-error mt-2 lg:hidden"
-                      (click)="removeRubro(i)"
-                      (click)="onRubroChange()"
-                      [disabled]="rubrosArray.length === 1"
-                    >
-                      Eliminar
-                    </button>
-                  </div>
-                </div>
-
-                }
-              </div>
-
-              <div class="border w-fit">
-                <label class="input">
-                  <span class="label">Total:</span>
-                  <div class="divider divider-horizontal"></div>
-                  <input formControlName="totalAssignedAmount" type="number" [value]="rubrosTotal()" />
-                </label>
-              </div>
-            </div>
-            <button class="btn btn-dash" type="button" (click)="addRubro()">AGREGAR +</button>
-          </div>
-        </div>
-
-        <div class="divider"></div>
-
-        <div class="flex justify-around lg:justify-end lg:gap-3">
-          <input (click)="onReset()" class="w-24 btn btn-warning" type="reset" value="Reset" />
-          <input class="w-24 btn btn-success" type="submit" value="Guardar" />
-        </div>
-      </form>
-    </section>
+      </div>
+    </div>
+    }
   </main>
 </body>
-
-@if(hasFetchError()) {
-<div role="alert" class="alert alert-error fixed top-20 right-5 animate-fade-left animate-duration-[750ms] animate-ease-out z-[999]">
-  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
-    <path
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="2"
-      d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-    />
-  </svg>
-  <span>Error: {{ errorMessage() }}</span>
-</div>
-} @if(isFormPosted()) {
-<!-- Modal de Éxito -->
-<input type="checkbox" id="success_modal" class="modal-toggle" [checked]="isFormPosted()" />
-<div class="modal" role="dialog">
-  <div class="modal-box text-center">
-    <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-green-500 mb-4" fill="none" viewBox="0 0 24 24">
-      <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-    </svg>
-    <h3 class="font-bold text-lg">¡Registro exitoso!</h3>
-    <p class="py-4">La información presupuestal fue guardada correctamente.</p>
-    <div class="modal-action">
-      <label for="success_modal" (click)="closeSuccessModal()" class="btn btn-primary">Cerrar</label>
-    </div>
-  </div>
-</div>
-}

@@ -1,341 +1,252 @@
-<body class="min-h-screen leading-normal overflow-x-hidden lg:overflow-auto mb-12 pb-20 not-sm:px-4">
-  <main class="flex-1 md:p-0 lg:pt-8 lg:px-8 md:ml-24 flex flex-col">
-    <section class="rounded-4xl shadow-xl/20 p-4 bg-base-200">
-      <div class="md:flex">
-        <h2 class="uppercase tracking-wide mb-6 text-xl">nuevo contratista</h2>
+<body class="min-h-screen bg-base-100 text-base-content">
+  <section class="max-w-5xl mx-auto p-6 space-y-8">
+    <!-- Título -->
+    <div class="text-center">
+      <h1 class="text-3xl font-bold">🏢 Nuevo Contratista - Persona Jurídica</h1>
+    </div>
+
+    <form [formGroup]="juridicalPersonForm" (ngSubmit)="onSubmit()" class="space-y-8">
+      <!-- DATOS EMPRESA -->
+      <div class="card bg-base-200 p-6 space-y-6">
+        <h2 class="text-xl font-semibold">📄 Datos de la Persona Jurídica</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="label font-bold text-sm">Razón Social</label>
+            <input
+              formControlName="businessName"
+              type="text"
+              class="input input-bordered w-full"
+              placeholder="Ej: Constructora ABC S.A.S."
+            />
+            @if (controlHasError('businessName')) {
+            <span class="text-xs text-error">{{ getErrorMessage('businessName', 3) }}</span>
+            }
+          </div>
+          <div>
+            <label class="label font-bold text-sm">NIT</label>
+            <input
+              formControlName="businessDocumentNumber"
+              type="text"
+              class="input input-bordered w-full"
+              placeholder="Ej: 900123456-7"
+              (keypress)="allowOnlyNumbersAndHyphens($event)"
+            />
+            @if (controlHasError('businessDocumentNumber')) {
+            <span class="text-xs text-error">{{ getErrorMessage('businessDocumentNumber', 6) }}</span>
+            }
+          </div>
+        </div>
       </div>
 
-      <form [formGroup]="juridicalPersonForm" (ngSubmit)="onSubmit()">
-        <div class="md:flex mb-8">
-          <div class="md:w-1/3">
-            <legend class="uppercase tracking-wide text-sm">Datos Persona Jurídica</legend>
-          </div>
-
-          <div class="md:flex-1 mt-2 mb:mt-0 md:px-3">
-            <div class="mb-4">
-              <label class="block uppercase tracking-wide text-xs font-bold">Razón Social</label>
-              <input
-                formControlName="businessName"
-                class="w-full shadow-inner p-4 border-0 bg-base-100 placeholder:opacity-40 placeholder:italic"
-                type="text"
-                placeholder="Ej: Constructora ABC S.A.S."
-              />
-              @if (controlHasError('businessName')) {
-              <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('businessName', 3) }}</span>
-              }
-            </div>
-
-            <div class="md:flex mb-4">
-              <div class="md:flex-1 md:pr-3">
-                <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold">Tipo de Documento</label>
-                <select disabled class="w-full shadow-inner p-4 border-0 bg-base-300">
-                  <option selected>NIT</option>
-                </select>
-              </div>
-              <div class="md:flex-1 md:pl-3 not-md:mt-3">
-                <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold"
-                  >Número de Identificación Tributaria</label
-                >
-                <input
-                  formControlName="businessDocumentNumber"
-                  class="w-full shadow-inner p-4 border-0 bg-base-100"
-                  type="text"
-                  name="document_number"
-                  placeholder="Digite el número de documento"
-                  (keypress)="allowOnlyNumbersAndHyphens($event)"
-                />
-                @if (controlHasError('businessDocumentNumber')) {
-                <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('businessDocumentNumber', 6) }}</span>
-                }
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="md:flex mb-8">
-          <div class="md:w-1/3">
-            <legend class="uppercase tracking-wide text-sm">Datos de representante legal</legend>
-          </div>
-          <div class="md:flex-1 mt-2 mb:mt-0 md:px-3">
-            <div class="mb-4">
-              <label class="block uppercase tracking-wide text-xs font-bold">Nombre</label>
-              <input
-                formControlName="name"
-                class="w-full shadow-inner p-4 border-0 bg-base-100"
-                type="text"
-                name="name"
-                placeholder="Nombre del representante legal"
-                autocomplete="name"
-              />
-              @if (controlHasError('name')) {
-              <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('name', 3) }}</span>
-              }
-            </div>
-            <div class="md:flex mb-4">
-              <div class="md:flex-1 md:pr-3">
-                <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold">Tipo de Documento</label>
-
-                <select formControlName="documentType" class="w-full shadow-inner p-4 border-0 bg-base-100">
-                  <option value="" disabled selected>Seleccione un tipo de documento</option>
-                  <option value="CC">Cédula de ciudadanía</option>
-                  <option value="CE">Cédula de extranjería</option>
-                  <option value="PAS">Pasaporte</option>
-                </select>
-
-                @if (controlHasError('documentType')) {
-                <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('documentType') }}</span>
-                }
-              </div>
-              <div class="md:flex-1 md:pl-3 not-md:mt-3">
-                <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold">Número de documento</label>
-                <input
-                  formControlName="documentNumber"
-                  class="w-full shadow-inner p-4 border-0 bg-base-100"
-                  type="text"
-                  name="document_number"
-                  placeholder="Digite el número de documento"
-                  (keypress)="allowOnlyNumbers($event)"
-                />
-                @if (controlHasError('documentNumber')) {
-                <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('documentNumber', 6) }}</span>
-                }
-              </div>
-            </div>
-            <div class="">
-              <div class="mb-4">
-                <label class="block uppercase tracking-wide text-xs font-bold">Lugar de expedición</label>
-                <input
-                  formControlName="expeditionAddress"
-                  class="w-full shadow-inner p-4 border-0 bg-base-100"
-                  type="text"
-                  name="name"
-                  placeholder="Ciudad / Departamento"
-                />
-                @if (controlHasError('expeditionAddress')) {
-                <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('expeditionAddress', 3) }}</span>
-                }
-              </div>
-            </div>
-            <div class="md:flex mb-4">
-              <div class="md:flex-1 md:pr-3">
-                <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold">Fecha de nacimiento</label>
-                <input formControlName="birthDate" class="w-full shadow-inner p-4 border-0 bg-base-100" type="date" />
-                @if (controlHasError('birthDate')) {
-                <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('birthDate') }}</span>
-                }
-              </div>
-              <div class="md:flex-1 md:pl-3 not-md:mt-3">
-                <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold">Género</label>
-                <select formControlName="genre" class="w-full shadow-inner p-4 border-0 bg-base-100">
-                  <option value="" disabled selected>Seleccione un género</option>
-                  <option value="M">Masculino</option>
-                  <option value="F">Femenino</option>
-                </select>
-                @if (controlHasError('genre')) {
-                <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('genre') }}</span>
-                }
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="md:flex mb-8">
-          <div class="md:w-1/3">
-            <legend class="uppercase tracking-wide text-sm">Datos de Contacto</legend>
-          </div>
-          <div class="md:flex-1 mt-2 mb:mt-0 md:px-3">
-            <div class="mb-4">
-              <label class="block uppercase tracking-wide text-xs font-bold">Dirección</label>
-              <input
-                formControlName="address"
-                class="w-full shadow-inner p-4 border-0 bg-base-100"
-                type="text"
-                placeholder="Ej: Cra 10 #20-30"
-              />
-              @if (controlHasError('address')) {
-              <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('address', 3) }}</span>
-              }
-            </div>
-            <div class="mb-4">
-              <label class="block uppercase tracking-wide text-xs font-bold">Teléfono 1</label>
-              <input
-                formControlName="phone"
-                class="w-full shadow-inner p-4 border-0 bg-base-100"
-                type="tel"
-                maxlength="10"
-                name="phone"
-                placeholder="Digite el número de teléfono"
-                (keypress)="allowOnlyNumbers($event)"
-              />
-              @if (controlHasError('phone')) {
-              <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('phone', 10) }}</span>
-              }
-            </div>
-            <div class="mb-4">
-              <label class="block uppercase tracking-wide text-xs font-bold">Teléfono 2</label>
-              <input
-                formControlName="phone2"
-                class="w-full shadow-inner p-4 border-0 bg-base-100"
-                type="tel"
-                maxlength="10"
-                name="phone"
-                placeholder="opcional"
-                (keypress)="allowOnlyNumbers($event)"
-              />
-              @if (controlHasError('phone2')) {
-              <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('phone2', 10) }}</span>
-              }
-            </div>
-            <div class="mb-4">
-              <label class="block uppercase tracking-wide text-charcoal-darker text-xs font-bold">Email</label>
-              <input
-                formControlName="email"
-                class="w-full shadow-inner p-4 border-0 bg-base-100"
-                type="email"
-                name="email"
-                placeholder="example@mail.com"
-              />
-              @if (controlHasError('email')) {
-              <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('email') }}</span>
-              }
-            </div>
-          </div>
-        </div>
-
-        <div class="md:flex">
-          <div class="md:w-1/3">
-            <legend class="uppercase tracking-wide text-sm">Datos Bancarios</legend>
-          </div>
-          <div class="md:flex-1 mt-2 mb:mt-0 md:px-3">
-            <div class="mb-4">
-              <label class="block uppercase tracking-wide text-xs font-bold">Entidad Financiera</label>
-
-              <select formControlName="bank" class="w-full shadow-inner p-4 border-0 bg-base-100" (change)="onBankChange($event)">
-                <option value="" disabled selected>Seleccione una entidad financiera</option>
-                <option>Bancamía S.A.</option>
-                <option>BANCIEN S.A. / BAN100 S.A.</option>
-                <option>BANCO AGRARIO DE COLOMBIA S.A.</option>
-                <option>Banco AV Villas S.A.</option>
-                <option>Banco BBVA Colombia S.A.</option>
-                <option>Banco BTG Pactual Colombia S.A.</option>
-                <option>BANCO CAJA SOCIAL S.A.</option>
-                <option>BANCO CONTACTAR S.A.</option>
-                <option>Banco Coomeva S.A.</option>
-                <option>Banco Cooperativo Coopcentral</option>
-                <option>Banco Davivienda S.A.</option>
-                <option>Banco de Bogotá S.A.</option>
-                <option>Banco de Occidente S.A.</option>
-                <option>Banco Falabella S.A.</option>
-                <option>Banco Finandina S.A.</option>
-                <option>BANCO GNB SUDAMERIS S.A.</option>
-                <option>BANCO J.P. MORGAN COLOMBIA S.A.</option>
-                <option>BANCO MUNDO MUJER S.A.</option>
-                <option>Banco Pichincha S.A.</option>
-                <option>Banco Popular S.A.</option>
-                <option>BANCO SANTANDER DE NEGOCIOS COLOMBIA S.A.</option>
-                <option>BANCO SERFINANZA S.A.</option>
-                <option>BANCO UNIÓN S.A.</option>
-                <option>Banco W S.A.</option>
-                <option>Bancolombia S.A.</option>
-                <option>Citibank-Colombia</option>
-                <option>Itaú Colombia S.A.</option>
-                <option>Lulo Bank S.A.</option>
-                <option>Mibanco S.A.</option>
-                <option>SCOTIABANK COLPATRIA S.A.</option>
-                <option value="null">Otra entidad financiera</option>
-              </select>
-              @if (controlHasError('bank')) {
-              <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('bank') }}</span>
-              }
-            </div>
-
-            <!-- Sólo aparece si existe el control -->
-            @if (juridicalPersonForm.contains('anotherBank')) {
-            <div class="mb-4">
-              <label class="block uppercase text-xs font-bold">Otra entidad Financiera</label>
-              <input
-                formControlName="anotherBank"
-                class="w-full p-4 bg-base-100"
-                type="text"
-                placeholder="Ej: Banco de la Gente S.A."
-              />
-              @if (controlHasError('anotherBank')) {
-              <span class="text-xs text-error">{{ getErrorMessage('anotherBank', 3) }}</span>
-              }
-            </div>
+      <!-- DATOS REPRESENTANTE -->
+      <div class="card bg-base-200 p-6 space-y-6">
+        <h2 class="text-xl font-semibold">👤 Datos del Representante Legal</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="label font-bold text-sm">Nombre Completo</label>
+            <input formControlName="name" type="text" class="input input-bordered w-full" placeholder="Nombre del representante" />
+            @if (controlHasError('name')) {
+            <span class="text-xs text-error">{{ getErrorMessage('name', 3) }}</span>
             }
-
-            <div class="mb-4">
-              <label class="block uppercase tracking-wide text-xs font-bold">Tipo de cuenta</label>
-
-              <select formControlName="accountType" class="w-full shadow-inner p-4 border-0 bg-base-100">
-                <option value="" disabled selected>Seleccione un tipo de cuenta</option>
-                <option value="AHORROS">Ahorros</option>
-                <option value="CORRIENTE">Corriente</option>
-              </select>
-              @if (controlHasError('accountType')) {
-              <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('accountType') }}</span>
+          </div>
+          <div>
+            <label class="label font-bold text-sm">Tipo de Documento</label>
+            <select formControlName="documentType" class="select select-bordered w-full">
+              <option value="" disabled selected>Seleccione un tipo</option>
+              @for (t of [{value: 'CC', label: 'Cédula de ciudadanía'}, {value: 'CE', label: 'Cédula de extranjería'}, {value: 'PAS',
+              label: 'Pasaporte'}]; track t.value) {
+              <option [value]="t.value">{{ t.label }}</option>
               }
-            </div>
-
-            <div class="mb-4">
-              <label class="block uppercase tracking-wide text-xs font-bold">Número de cuenta</label>
-              <input
-                formControlName="bankAccountNumber"
-                class="w-full shadow-inner p-4 border-0 bg-base-100"
-                type="text"
-                placeholder="123456789"
-                (keypress)="allowOnlyNumbers($event)"
-              />
-              @if (controlHasError('bankAccountNumber')) {
-              <span class="text-xs mb-4 font-thin text-error">{{ getErrorMessage('bankAccountNumber') }}</span>
+            </select>
+            @if (controlHasError('documentType')) {
+            <span class="text-xs text-error">{{ getErrorMessage('documentType') }}</span>
+            }
+          </div>
+          <div>
+            <label class="label font-bold text-sm">Número de Documento</label>
+            <input
+              formControlName="documentNumber"
+              type="text"
+              class="input input-bordered w-full"
+              (keypress)="allowOnlyNumbers($event)"
+              placeholder="Ej: 1234567890"
+            />
+            @if (controlHasError('documentNumber')) {
+            <span class="text-xs text-error">{{ getErrorMessage('documentNumber', 6) }}</span>
+            }
+          </div>
+          <div>
+            <label class="label font-bold text-sm">Lugar de Expedición</label>
+            <input
+              formControlName="expeditionAddress"
+              type="text"
+              class="input input-bordered w-full"
+              placeholder="Ciudad / Departamento"
+            />
+            @if (controlHasError('expeditionAddress')) {
+            <span class="text-xs text-error">{{ getErrorMessage('expeditionAddress', 3) }}</span>
+            }
+          </div>
+          <div>
+            <label class="label font-bold text-sm">Fecha de Nacimiento</label>
+            <input formControlName="birthDate" type="date" class="input input-bordered w-full" />
+            @if (controlHasError('birthDate')) {
+            <span class="text-xs text-error">{{ getErrorMessage('birthDate') }}</span>
+            }
+          </div>
+          <div>
+            <label class="label font-bold text-sm">Género</label>
+            <select formControlName="genre" class="select select-bordered w-full">
+              <option value="" disabled selected>Seleccione</option>
+              @for (g of [{value: 'M', label: 'Masculino'}, {value: 'F', label: 'Femenino'}]; track g.value) {
+              <option [value]="g.value">{{ g.label }}</option>
               }
-            </div>
+            </select>
+            @if (controlHasError('genre')) {
+            <span class="text-xs text-error">{{ getErrorMessage('genre') }}</span>
+            }
           </div>
         </div>
+      </div>
 
-        <div class="divider"></div>
-
-        <div class="flex justify-around md:justify-end md:gap-3">
-          <input (click)="onReset()" class="w-24 btn btn-warning" type="reset" value="Reset" />
-          <input class="w-24 btn btn-success" type="submit" value="Guardar" />
+      <!-- DATOS DE CONTACTO -->
+      <div class="card bg-base-200 p-6 space-y-6">
+        <h2 class="text-xl font-semibold">📞 Datos de Contacto</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="label font-bold text-sm">Dirección</label>
+            <input formControlName="address" type="text" class="input input-bordered w-full" placeholder="Ej: Calle 123 #45-67" />
+            @if (controlHasError('address')) {
+            <span class="text-xs text-error">{{ getErrorMessage('address', 3) }}</span>
+            }
+          </div>
+          <div>
+            <label class="label font-bold text-sm">Teléfono 1</label>
+            <input
+              formControlName="phone"
+              type="tel"
+              maxlength="10"
+              class="input input-bordered w-full"
+              (keypress)="allowOnlyNumbers($event)"
+            />
+            @if (controlHasError('phone')) {
+            <span class="text-xs text-error">{{ getErrorMessage('phone', 10) }}</span>
+            }
+          </div>
+          <div>
+            <label class="label font-bold text-sm">Teléfono 2</label>
+            <input
+              formControlName="phone2"
+              type="tel"
+              maxlength="10"
+              class="input input-bordered w-full"
+              placeholder="opcional"
+              (keypress)="allowOnlyNumbers($event)"
+            />
+            @if (controlHasError('phone2')) {
+            <span class="text-xs text-error">{{ getErrorMessage('phone2', 10) }}</span>
+            }
+          </div>
+          <div>
+            <label class="label font-bold text-sm">Correo Electrónico</label>
+            <input formControlName="email" type="email" class="input input-bordered w-full" placeholder="correo@ejemplo.com" />
+            @if (controlHasError('email')) {
+            <span class="text-xs text-error">{{ getErrorMessage('email') }}</span>
+            }
+          </div>
         </div>
-      </form>
-    </section>
-  </main>
-</body>
+      </div>
 
-@if(hasFetchError()){
+      <!-- DATOS BANCARIOS -->
+      <div class="card bg-base-200 shadow-md p-6 space-y-6">
+        <h2 class="text-xl font-semibold">🏦 Datos Bancarios</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Entidad -->
+          <div class="md:col-span-2">
+            <label class="label font-bold text-sm">Entidad Financiera</label>
+            <select formControlName="bank" class="select select-bordered w-full" (change)="onBankChange($event)">
+              <option value="" disabled selected>Seleccione una entidad</option>
+              @for (bank of banks; track bank) {
+              <option [value]="bank">{{ bank }}</option>
+              }
+              <option value="null">Otra entidad financiera</option>
+            </select>
+            @if (controlHasError('bank')) {
+            <span class="text-xs text-error">{{ getErrorMessage('bank') }}</span>
+            }
+          </div>
 
-<div role="alert" class="alert alert-error fixed top-20 right-5 animate-fade-left animate-duration-[750ms] animate-ease-out">
-  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
-    <path
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="2"
-      d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-    />
-  </svg>
-  <span>Error: {{ errorMessage() }}</span>
-</div>
+          <!-- Otra entidad -->
+          @if (juridicalPersonForm.contains('anotherBank')) {
+          <div class="md:col-span-2">
+            <label class="label font-bold text-sm">Otra entidad</label>
+            <input formControlName="anotherBank" type="text" class="input input-bordered w-full" placeholder="Ej: Banco de la Gente" />
+            @if (controlHasError('anotherBank')) {
+            <span class="text-xs text-error">{{ getErrorMessage('anotherBank', 3) }}</span>
+            }
+          </div>
+          }
 
-}
-<!--  -->
-@if(isFormPosted()){
+          <!-- Tipo cuenta -->
+          <div>
+            <label class="label font-bold text-sm">Tipo de Cuenta</label>
+            <select formControlName="accountType" class="select select-bordered w-full">
+              <option value="" disabled selected>Seleccione</option>
+              @for (t of [{value: 'AHORROS', label: 'Ahorros'}, {value: 'CORRIENTE', label: 'Corriente'}]; track t.value) {
+              <option [value]="t.value">{{ t.label }}</option>
+              }
+            </select>
+            @if (controlHasError('accountType')) {
+            <span class="text-xs text-error">{{ getErrorMessage('accountType') }}</span>
+            }
+          </div>
 
-<!-- Modal de Éxito -->
-<input type="checkbox" id="success_modal" class="modal-toggle" [checked]="isFormPosted()" />
-<div class="modal" role="dialog">
-  <div class="modal-box text-center">
-    <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-green-500 mb-4" fill="none" viewBox="0 0 24 24">
-      <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-    </svg>
-    <h3 class="font-bold text-lg">¡Registro exitoso!</h3>
-    <p class="py-4">La persona jurídica fue creada correctamente.</p>
-    <div class="modal-action">
-      <label for="success_modal" (click)="closeSuccessModal()" class="btn btn-primary">Cerrar</label>
+          <!-- Número cuenta -->
+          <div>
+            <label class="label font-bold text-sm">Número de Cuenta</label>
+            <input
+              formControlName="bankAccountNumber"
+              type="text"
+              class="input input-bordered w-full"
+              placeholder="123456789"
+              (keypress)="allowOnlyNumbers($event)"
+            />
+            @if (controlHasError('bankAccountNumber')) {
+            <span class="text-xs text-error">{{ getErrorMessage('bankAccountNumber') }}</span>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Botones -->
+      <div class="flex justify-end gap-4">
+        <button type="reset" (click)="onReset()" class="btn btn-warning">Reset</button>
+        <button type="submit" class="btn btn-success">Guardar</button>
+      </div>
+    </form>
+
+    <!-- Error Fetch -->
+    @if(hasFetchError()) {
+    <div class="alert alert-error fixed top-20 right-5 z-50 shadow-lg animate-fade-left animate-duration-700">
+      <span>Error: {{ errorMessage() }}</span>
     </div>
-  </div>
-</div>
+    }
 
-}
+    <!-- Modal de Éxito -->
+    @if(isFormPosted()) {
+    <input type="checkbox" id="success_modal" class="modal-toggle" [checked]="isFormPosted()" />
+    <div class="modal">
+      <div class="modal-box text-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-green-500 mb-4" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
+        <h3 class="font-bold text-lg">¡Registro exitoso!</h3>
+        <p class="py-4">La persona jurídica fue creada correctamente.</p>
+        <div class="modal-action">
+          <label for="success_modal" (click)="closeSuccessModal()" class="btn btn-primary">Cerrar</label>
+        </div>
+      </div>
+    </div>
+    }
+  </section>
+</body>

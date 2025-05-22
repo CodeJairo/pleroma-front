@@ -20,7 +20,7 @@ export class JuridicalPersonComponent {
 
   // Propiedades
   isFormDirty = output<boolean>();
-
+  banks = [];
   hasFormError = signal(false);
   hasFetchError = signal(false);
   isPosting = signal(false);
@@ -49,7 +49,7 @@ export class JuridicalPersonComponent {
     phone2: ['', [Validators.minLength(10)]],
     email: ['', [Validators.required, Validators.email]],
     bank: ['', [Validators.required]],
-    // rlAnotherBank: ['', [Validators.minLength(3)]],
+    // anotherBank: ['', [Validators.minLength(3)]],
     accountType: ['', [Validators.required]],
     bankAccountNumber: ['', [Validators.required]],
   });
