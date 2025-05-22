@@ -4,6 +4,7 @@ import { BudgetInformationPageComponent } from './pages/budget-information-page/
 import { MasterInfoPageComponent } from './pages/master-info-page/master-info-page.component';
 import { AdministrativeLayoutPageComponent } from './layout/administrative-layout-page/administrative-layout-page.component';
 import { UnsavedChangesGuard } from '@auth/guards/unsaved-changes.guard';
+import { GenerateContractPageComponent } from './pages/generate-contract-page/generate-contract-page.component';
 
 export const administrativeRoutes: Routes = [
   {
@@ -22,6 +23,10 @@ export const administrativeRoutes: Routes = [
       {
         path: 'master-info',
         component: MasterInfoPageComponent,
+      },
+      {
+        path: 'generate',
+        component: GenerateContractPageComponent,
       },
       {
         path: '**',
