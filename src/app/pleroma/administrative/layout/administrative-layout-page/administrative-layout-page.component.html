@@ -1,12 +1,24 @@
-<ul class="menu menu-horizontal bg-base-200 not-md:hidden sticky top-0 z-50">
+<!-- Mini-navbar horizontal tipo pasos -->
+<ul class="menu menu-horizontal bg-base-200 rounded-box px-4 py-2 sticky top-0 z-50 shadow-sm text-sm font-medium not-md:hidden">
+  <!-- Paso 1 -->
   <li>
-    <a routerLink="create-contractor" routerLinkActive="menu-active">Crear Contratista</a>
+    <a routerLink="create-contractor" routerLinkActive="p-menu-active" class="transition-all duration-200"> 1. Contratista </a>
   </li>
+
+  <!-- Paso 2 -->
   <li>
-    <a routerLink="budget-information" routerLinkActive="menu-active">Imputación Presupuestal</a>
+    <a routerLink="budget-information" routerLinkActive="p-menu-active" class="transition-all duration-200"> 2. Presupuesto </a>
   </li>
+
+  <!-- Paso 3 -->
   <li>
-    <a routerLink="master-info" routerLinkActive="menu-active">Información Maestra del proceso</a>
+    <a routerLink="master-info" routerLinkActive="p-menu-active" class="transition-all duration-200"> 3. Información </a>
+  </li>
+
+  <!-- Paso 4 -->
+  <li>
+    <a routerLink="generate" routerLinkActive="p-menu-active" class="transition-all duration-200"> 4. Generar </a>
   </li>
 </ul>
+
 <router-outlet />
