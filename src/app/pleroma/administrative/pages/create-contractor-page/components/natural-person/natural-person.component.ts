@@ -17,7 +17,7 @@ export class NaturalPersonComponent {
   fb = inject(FormBuilder);
   formCacheService = inject(FormCacheService);
   #naturalPersonService = inject(NaturalPersonService);
-
+  banks = [];
   // Propiedades
   isFormDirty = output<boolean>();
 
