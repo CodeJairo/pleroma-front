@@ -19,7 +19,7 @@ export class AuthService {
 
   // Estado del usuario y observables
   #user = new BehaviorSubject<UserWithToken | null>(null);
-  user$ = this.#user.asObservable();
+  user$  = this.#user.asObservable();
   isLoggedIn$: Observable<boolean> = this.#user.pipe(map(Boolean));
 
   // Control de expiración y temporizadores
