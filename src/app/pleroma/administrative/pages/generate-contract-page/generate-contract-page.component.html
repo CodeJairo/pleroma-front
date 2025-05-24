@@ -1,30 +1,136 @@
-<body class="min-h-screen bg-base-100 text-base-content relative">
-  <!-- PANEL DERECHO EN ESCRITORIO -->
-  <aside
-    class="hidden lg:block fixed right-6 top-24 w-80 max-h-[80vh] overflow-y-auto space-y-6 p-2 border-l border-base-300 bg-base-100 rounded-lg shadow-lg z-40"
-  >
-    <!-- 📁 Contratos Generados -->
-    <div>
-      <h2 class="text-base font-bold mb-2 text-right">📁 Contratos Generados</h2>
-      <div class="space-y-2">
-        @for (contract of recentContracts; track contract) {
-        <div class="card bg-base-200 shadow-sm p-3 text-sm">
-          <div class="flex justify-between items-start">
-            <div>
-              <p class="font-semibold">{{ contract.name }}</p>
-              <p class="text-xs text-gray-500">{{ contract.date | date : 'shortDate' }}</p>
+<body class="min-h-screen bg-base-100 text-base-content">
+  <!-- CONTENEDOR FLEXIBLE PRINCIPAL -->
+  <div class="flex flex-col lg:flex-row max-w-7xl mx-auto p-6 gap-6">
+    <!-- CONTENIDO PRINCIPAL -->
+    <section class="flex-1">
+      <!-- TÍTULO -->
+      <h1 class="text-3xl font-bold text-center mb-2 not-sm:text-xl text-nowrap">📂 Generar Documentos y Reportes</h1>
+      <p class="text-center text-sm text-gray-500 mb-8">Seleccione el tipo de documento o reporte que desea generar.</p>
+
+      <div class="space-y-6">
+        <!-- OPCIONES -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          @for (option of generateOptions; track option) {
+          <div
+            class="card bg-base-200 hover:bg-base-300 cursor-pointer shadow-md transition-all"
+            (click)="selectOption(option)"
+            [class.border-primary]="selectedOption === option"
+          >
+            <div class="card-body items-center text-center">
+              <div class="text-4xl">{{ option.icon }}</div>
+              <h2 class="card-title text-base">{{ option.label }}</h2>
             </div>
-            <a [href]="contract.url" target="_blank" class="btn btn-xs btn-outline">Descargar</a>
           </div>
+          }
+        </div>
+
+        <!-- PARÁMETROS -->
+        @if (selectedOption) {
+        <div class="card bg-base-100 shadow-md p-6 space-y-4 border border-base-300" [formGroup]="generateForm">
+          <h2 class="text-lg font-semibold text-primary">{{ selectedOption.label }}</h2>
+
+          <!-- Proceso / contrato -->
+          <div>
+            <label class="label font-bold text-sm">Seleccionar por número de orden contractual</label>
+            <select formControlName="processId" class="select select-bordered w-full">
+              <option selected value="All">Exportar Todos</option>
+              @for (process of procesos; track process) {
+              <option [value]="process.id">{{ process.name }}</option>
+              }
+            </select>
+            @if (generateForm.get('processId')?.invalid && generateForm.get('processId')?.touched) {
+            <div class="text-error text-xs mt-1">Seleccione un contrato o proceso.</div>
+            }
+          </div>
+
+          <!-- Formato -->
+          <div>
+            <label class="label font-bold text-sm">Formato de salida</label>
+            <div class="flex gap-4">
+              <label class="cursor-pointer">
+                <input type="radio" formControlName="format" value="pdf" class="radio radio-sm" />
+                <span class="ml-2">PDF</span>
+              </label>
+              <label class="cursor-pointer">
+                <input type="radio" formControlName="format" value="word" class="radio radio-sm" />
+                <span class="ml-2">Word</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- BOTÓN -->
+          <div class="text-end pt-4">
+            <button class="btn btn-primary" (click)="generateDocument()" [disabled]="generateForm.invalid">Generar</button>
+          </div>
+        </div>
+        }
+      </div>
+    </section>
+
+    <!-- PANEL DERECHO EN ESCRITORIO -->
+    <aside
+      class="hidden lg:block w-full lg:w-80 space-y-6 p-2 border-l border-base-300 bg-base-100 rounded-lg shadow-lg overflow-y-auto max-h-[80vh]"
+    >
+      <!-- 📁 Contratos Generados -->
+      <div>
+        <h2 class="text-base font-bold mb-2 text-right">📁 Contratos Generados</h2>
+        <div class="space-y-2">
+          @for (contract of recentContracts; track contract) {
+          <div class="card bg-base-200 shadow-sm p-3 text-sm">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="font-semibold">{{ contract.name }}</p>
+                <p class="text-xs text-gray-500">{{ contract.date | date : 'shortDate' }}</p>
+              </div>
+              <a [href]="contract.url" target="_blank" class="btn btn-xs btn-outline">Descargar</a>
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+
+      <!-- 📜 Historial de Contratos -->
+      <div class="collapse collapse-arrow bg-base-100 border border-base-300 rounded-box">
+        <input type="checkbox" />
+        <div class="collapse-title text-sm font-semibold text-right">📜 Historial de Contratos Generados</div>
+        <div class="collapse-content space-y-2 text-sm">
+          @for (contract of historicalContracts; track contract) {
+          <div class="flex justify-between items-start border-b border-base-300 py-1">
+            <div>
+              <p class="font-medium">{{ contract.name }}</p>
+              <p class="text-xs text-gray-400">{{ contract.date | date : 'shortDate' }}</p>
+            </div>
+            <a [href]="contract.url" target="_blank" class="btn btn-xs btn-ghost">Ver</a>
+          </div>
+          }
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- PANEL DERECHO EN MÓVIL -->
+  <div class="block lg:hidden space-y-6 p-6">
+    <!-- Contratos Generados -->
+    <div class="collapse collapse-arrow bg-base-200 rounded-box border border-base-300">
+      <input type="checkbox" />
+      <div class="collapse-title font-semibold">📁 Contratos Generados</div>
+      <div class="collapse-content space-y-2 text-sm">
+        @for (contract of recentContracts; track contract) {
+        <div class="flex justify-between items-start border-b border-base-300 py-1">
+          <div>
+            <p class="font-semibold">{{ contract.name }}</p>
+            <p class="text-xs text-gray-500">{{ contract.date | date : 'shortDate' }}</p>
+          </div>
+          <a [href]="contract.url" target="_blank" class="btn btn-xs btn-outline">Descargar</a>
         </div>
         }
       </div>
     </div>
 
-    <!-- 📜 Historial de Contratos -->
-    <div class="collapse collapse-arrow bg-base-100 border border-base-300 rounded-box">
+    <!-- Historial -->
+    <div class="collapse collapse-arrow bg-base-100 rounded-box border border-base-300">
       <input type="checkbox" />
-      <div class="collapse-title text-sm font-semibold text-right">📜 Historial de Contratos Generados</div>
+      <div class="collapse-title font-semibold">📜 Historial de Contratos Generados</div>
       <div class="collapse-content space-y-2 text-sm">
         @for (contract of historicalContracts; track contract) {
         <div class="flex justify-between items-start border-b border-base-300 py-1">
@@ -37,108 +143,5 @@
         }
       </div>
     </div>
-  </aside>
-
-  <!-- CONTENIDO PRINCIPAL -->
-  <section class="max-w-5xl mx-auto p-6">
-    <!-- TÍTULO -->
-    <h1 class="text-3xl font-bold text-center mb-2 not-sm:text-xl text-nowrap">📂 Generar Documentos y Reportes</h1>
-    <p class="text-center text-sm text-gray-500 mb-8">Seleccione el tipo de documento o reporte que desea generar.</p>
-
-    <div class="space-y-6">
-      <!-- OPCIONES -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        @for (option of generateOptions; track option) {
-        <div
-          class="card bg-base-200 hover:bg-base-300 cursor-pointer shadow-md transition-all"
-          (click)="selectOption(option)"
-          [class.border-primary]="selectedOption === option"
-        >
-          <div class="card-body items-center text-center">
-            <div class="text-4xl">{{ option.icon }}</div>
-            <h2 class="card-title text-base">{{ option.label }}</h2>
-          </div>
-        </div>
-        }
-      </div>
-
-      <!-- PARÁMETROS -->
-      @if (selectedOption) {
-      <div class="card bg-base-100 shadow-md p-6 space-y-4 border border-base-300" [formGroup]="generateForm">
-        <h2 class="text-lg font-semibold text-primary">{{ selectedOption.label }}</h2>
-
-        <!-- Proceso / contrato -->
-        <div>
-          <label class="label font-bold text-sm">Seleccionar por número de orden contractual</label>
-          <select formControlName="processId" class="select select-bordered w-full">
-            <option selected value="All">Exportar Todos</option>
-            @for (process of procesos; track process) {
-            <option [value]="process.id">{{ process.name }}</option>
-            }
-          </select>
-          @if (generateForm.get('processId')?.invalid && generateForm.get('processId')?.touched) {
-          <div class="text-error text-xs mt-1">Seleccione un contrato o proceso.</div>
-          }
-        </div>
-
-        <!-- Formato -->
-        <div>
-          <label class="label font-bold text-sm">Formato de salida</label>
-          <div class="flex gap-4">
-            <label class="cursor-pointer">
-              <input type="radio" formControlName="format" value="pdf" class="radio radio-sm" />
-              <span class="ml-2">PDF</span>
-            </label>
-            <label class="cursor-pointer">
-              <input type="radio" formControlName="format" value="word" class="radio radio-sm" />
-              <span class="ml-2">Word</span>
-            </label>
-          </div>
-        </div>
-
-        <!-- BOTÓN -->
-        <div class="text-end pt-4">
-          <button class="btn btn-primary" (click)="generateDocument()" [disabled]="generateForm.invalid">Generar</button>
-        </div>
-      </div>
-      }
-
-      <!-- PANEL DERECHO EN MÓVIL -->
-      <div class="block lg:hidden space-y-6">
-        <!-- Contratos Generados -->
-        <div class="collapse collapse-arrow bg-base-200 rounded-box border border-base-300">
-          <input type="checkbox" />
-          <div class="collapse-title font-semibold">📁 Contratos Generados</div>
-          <div class="collapse-content space-y-2 text-sm">
-            @for (contract of recentContracts; track contract) {
-            <div class="flex justify-between items-start border-b border-base-300 py-1">
-              <div>
-                <p class="font-semibold">{{ contract.name }}</p>
-                <p class="text-xs text-gray-500">{{ contract.date | date : 'shortDate' }}</p>
-              </div>
-              <a [href]="contract.url" target="_blank" class="btn btn-xs btn-outline">Descargar</a>
-            </div>
-            }
-          </div>
-        </div>
-
-        <!-- Historial -->
-        <div class="collapse collapse-arrow bg-base-100 rounded-box border border-base-300">
-          <input type="checkbox" />
-          <div class="collapse-title font-semibold">📜 Historial de Contratos Generados</div>
-          <div class="collapse-content space-y-2 text-sm">
-            @for (contract of historicalContracts; track contract) {
-            <div class="flex justify-between items-start border-b border-base-300 py-1">
-              <div>
-                <p class="font-medium">{{ contract.name }}</p>
-                <p class="text-xs text-gray-400">{{ contract.date | date : 'shortDate' }}</p>
-              </div>
-              <a [href]="contract.url" target="_blank" class="btn btn-xs btn-ghost">Ver</a>
-            </div>
-            }
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  </div>
 </body>
