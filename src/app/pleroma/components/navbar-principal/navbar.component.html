@@ -14,17 +14,18 @@
             <li><a routerLink="administrative/create-contractor">Crear Contratista</a></li>
             <li><a routerLink="/pleroma/administrative/budget-information">Imputación Presupuestal</a></li>
             <li><a routerLink="/pleroma/administrative/master-info">Información Maestra</a></li>
+            <li><a routerLink="/pleroma/administrative/generate">Generar Contratos</a></li>
           </ul>
         </li>
-        <li><a>Financiero</a></li>
-        <li><a>Técnico</a></li>
-        <li><a>Comercial</a></li>
+        <li><a routerLink="/pleroma/financial">Financiero</a></li>
+        <li><a routerLink="/pleroma/technical">Técnico</a></li>
+        <li><a routerLink="/pleroma/commercial">Comercial</a></li>
       </ul>
     </div>
     <a class="btn btn-ghost text-xl" routerLink="administrative">Pleroma</a>
   </div>
 
-  <!-- CENTRO (opcional en md+) -->
+  <!-- CENTRO -->
   <div class="navbar-center hidden md:flex">
     <ul class="menu menu-horizontal px-1">
       <li><a routerLink="administrative" routerLinkActive="bg-secondary" class="btn btn-ghost">Administrativo</a></li>
@@ -52,7 +53,7 @@
           <p class="font-semibold text-base leading-none">{{ user.name }}</p>
           <p class="text-sm text-gray-500 truncate">{{ user.email }}</p>
         </div>
-        <ul class="menu">
+        <ul class="menu w-full">
           <li><a routerLink="/profile">Perfil</a></li>
           <li><a (click)="logout()" class="text-error">Cerrar sesión</a></li>
         </ul>

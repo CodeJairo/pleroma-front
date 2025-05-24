@@ -1,6 +1,7 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { AuthService } from '../../../auth/services/auth.service';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+import { AuthService } from '@auth/services/auth.service';
+import { generateColorFromString } from '@shared/utils';
 import { Subscription } from 'rxjs';
 
 interface NavbarUser {
@@ -16,7 +17,6 @@ interface NavbarUser {
 })
 export class NavbarComponent implements OnInit, OnDestroy {
   #authService = inject(AuthService);
-  #router = inject(Router);
 
   user: NavbarUser = {
     name: '',
@@ -60,6 +60,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   #generateAvatar(name: string): string {
-    return `https://api.dicebear.com/6.x/initials/svg?seed=${encodeURIComponent(name)}`;
+    const color = generateColorFromString(name);
+    return `https://api.dicebear.com/6.x/initials/svg?seed=${encodeURIComponent(name)}&backgroundColor=${color}`;
   }
 }
