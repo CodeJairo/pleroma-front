@@ -14,6 +14,10 @@ export const routes: Routes = [
     canMatch: [IsLoggedInGuard],
   },
   {
+    path: 'terms',
+    loadComponent: () => import('./shared/pages/terms-page/terms-page.component').then(c => c.TermsPageComponent),
+  },
+  {
     path: '**',
     redirectTo: 'pleroma',
   },
