@@ -1,5 +1,22 @@
-<footer class="footer sm:footer-horizontal footer-center bg-base-300 text-base-content p-4">
-  <aside>
-    <p>Copyright © {{ ActualDate() }} – Todos los derechos reservados.</p>
-  </aside>
+<footer class="bg-base-200 text-base-content mt-10 border-t border-base-300">
+  <div class="max-w-7xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm">
+    <!-- Izquierda -->
+    <div class="text-center sm:text-left">
+      <p class="font-semibold">Pleroma © {{ ActualDate() }}</p>
+      <p class="text-xs text-gray-500">Todos los derechos reservados.</p>
+    </div>
+
+    <!-- Centro -->
+    <div class="hidden sm:flex items-center gap-6 text-xs text-gray-500">
+      <a routerLink="/terms" class="hover:underline">Términos</a>
+      <a href="#" class="hover:underline">Política de privacidad</a>
+      <a href="#" class="hover:underline">Ayuda</a>
+    </div>
+
+    <!-- Derecha -->
+    <div class="flex items-center gap-3">
+      <!-- <span class="text-xs text-gray-500">Hecho con ❤️ por tu equipo</span> -->
+      <span class="text-xs text-gray-500">Versión 1.0.0 • Plataforma de gestión contractual</span>
+    </div>
+  </div>
 </footer>
